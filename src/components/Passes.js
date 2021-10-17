@@ -8,6 +8,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 
+import copy from 'copy-to-clipboard';
+
 const AccountElm = ({website,login,pass,category}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -24,9 +26,9 @@ const AccountElm = ({website,login,pass,category}) => {
 
     return(
         <>
-        <Card sx={{p:1, m:2, textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
+        <Card sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
             <Tooltip title={category}>
-            <Avatar sx={{mr:1,height:'50px',width:'50px'}}>
+            <Avatar sx={{mr:1,height:'45px',width:'45px'}}>
                 <LockIcon sx={{color:'#fff'}} />
             </Avatar>
             </Tooltip>
@@ -38,7 +40,7 @@ const AccountElm = ({website,login,pass,category}) => {
                 <IconButton onClick={handleClick} variant='outlined' size="large">
                     <VisibilityIcon />
                 </IconButton>
-                <IconButton variant='outlined' size="large" onClick={() => {navigator.clipboard.writeText(pass)}}>
+                <IconButton variant='outlined' size="large" onClick={() => copy(pass)}>
                     <ContentCopyIcon />
                 </IconButton>  
             </Box>
@@ -75,9 +77,9 @@ const Passes = ({data, pass}) => {
     return(
         <>
         <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:'280px', marginLeft:'auto',marginRight:'auto'}} variant='outlined' placeholder='search'/>
-        <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center'}}>
+        <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
             {filteredData.map(elm=>
-                <AccountElm website='apple.com' login='demo@demo.com' pass={decrypt(elm.password, pass)} category={elm.category}/>
+                <AccountElm website={elm.website} login={elm.login} pass={decrypt(elm.password, pass)} category={elm.category}/>
             )}
         </Container>
         </>
