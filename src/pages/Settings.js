@@ -25,7 +25,9 @@ const Settings = () => {
             <br></br>
             {window.sessionStorage.getItem('pass')!==null &&
             <>
-                <Button onClick={logout} sx={{mb:5}} variant='outlined'>Logout</Button>
+                <Button onClick={()=>window.location='/passwords-health'} sx={{mb:2}} variant='outlined'>Passwords Health</Button>
+                <br></br>
+                <Button onClick={logout} sx={{mb:2}} variant='outlined'>Logout</Button>
                 <Divider/>
                 <br></br>
                 <Typography variant='h5'>Add new password</Typography>
