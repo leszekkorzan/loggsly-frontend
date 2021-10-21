@@ -29,6 +29,7 @@ const Connect = () => {
                     if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
                         setErr(false)
                         setData(data)
+                        window.sessionStorage.setItem('csv_data',JSON.stringify(data))
                     }else{
                         setErr(true)
                     }
