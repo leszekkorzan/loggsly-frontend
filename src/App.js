@@ -10,6 +10,7 @@ import Menu from './components/Menu';
 import Reset from './pages/Reset';
 import Settings from './pages/Settings';
 import PassHealth from './pages/PassHealth';
+import AddPass from './pages/AddPass';
 
 const App = ()=> {
   const darkTheme = createTheme({
@@ -31,6 +32,9 @@ const App = ()=> {
           </Route>
           <Route path="/passwords-health">
             <PassHealth/>
+          </Route>
+          <Route path="/add-password">
+            <AddPass/>
           </Route>
           <Route path="/">
             <Dashboard/>

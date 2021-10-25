@@ -1,22 +1,28 @@
-import React, {useState} from 'react';
-import { Container, Typography, TextField, Button, Divider } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import { Container, Typography, TextField, Button, Divider, Link } from '@mui/material';
 import aes from 'crypto-js/aes';
-
-import copy from 'copy-to-clipboard';
+import enc from 'crypto-js/enc-utf8'
 
 const Settings = () => {
     const pass = window.atob(window.sessionStorage.getItem('pass'));
-    const [passInpt, setPassInpt] = useState('');
-    const [encrypted, setEncrypted] = useState('');
+    const [apiInpt, setApiInpt] = useState('');
+    useEffect(()=>{
+        if(window.localStorage.getItem('manage_api')!==null){
+            var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
+            var URL = URLbytes.toString(enc);
+            setApiInpt(URL);
+        }
+    },[])
 
     const encrypt = () => {
-        const text = aes.encrypt(passInpt, pass).toString();
-        setEncrypted(text)
-        setPassInpt('')
-    }
-    const logout = () => {
-        window.sessionStorage.clear();
-        window.location = '/';
+        if(apiInpt === ""){
+            window.localStorage.removeItem('manage_api');
+            window.alert('Disabled!')
+        }else{
+            const text = aes.encrypt(apiInpt, pass).toString();
+            window.localStorage.setItem('manage_api', text);
+            window.alert('Enabled!')
+        }
     }
 
     return(
@@ -25,26 +31,14 @@ const Settings = () => {
             <br></br>
             {window.sessionStorage.getItem('pass')!==null &&
             <>
-                <Button onClick={()=>window.location='/passwords-health'} sx={{mb:2}} variant='outlined'>Passwords Health</Button>
-                <br></br>
-                <Button onClick={logout} sx={{mb:2}} variant='outlined'>Logout</Button>
                 <Divider/>
                 <br></br>
-                <Typography variant='h5'>Add new password</Typography>
+                <Typography variant='h5'>Configuration of password management from the application</Typography>
+                <Link href='#'>Follow instructions here</Link>
                 <br></br>
-                <TextField sx={{minWidth:'320px'}} value={passInpt} onChange={(e)=>setPassInpt(e.target.value)} label="password to encode" variant="outlined" />
+                <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="enter appscript API endpoint" variant="outlined" />
                 <br></br>
-                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Encrypt</Button>
-                <br></br>
-                <Typography sx={{wordBreak:'break-all'}}><i>{encrypted}</i></Typography>
-                <br></br>
-                {encrypted.length>0 &&
-                <>
-                    <Typography>Paste above hash as a password in Google Sheet.</Typography>
-                    <Button onClick={() => copy(encrypted)} sx={{m:1}} variant='outlined'>Copy</Button>
-                </>
-                }
-
+                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Save</Button>
             </>
             }
         </Container>
