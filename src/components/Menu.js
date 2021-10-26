@@ -11,6 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SecurityIcon from '@mui/icons-material/Security';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
@@ -79,9 +80,17 @@ const Menu = () => {
                         <ListItemText primary="Passwords Security" />
                         </ListItemButton>
                     </ListItem>
-                    <Divider sx={{my:2}}/>
                 </>
                 }
+                <ListItem disablePadding>
+                    <ListItemButton component='a' href='/' target='_blank'>
+                    <ListItemIcon>
+                        <DescriptionIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Documentation" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider sx={{my:2}}/>
                 <ListItem disablePadding>
                     <ListItemButton component='a' href='/settings'>
                     <ListItemIcon>

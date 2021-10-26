@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Box, Typography, TextField, Button, Alert, AlertTitle, InputAdornment} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import StorageIcon from '@mui/icons-material/Storage';
-import sha256 from 'crypto-js/sha256';
 import aes from 'crypto-js/aes';
 
 const Setup = () => {
@@ -16,7 +15,6 @@ const Setup = () => {
     const save = () => {
         if(url.length > 5 && pass1.length > 1 && pass1 === pass2){
             window.localStorage.setItem('csv_url', aes.encrypt(url, pass1).toString())
-            window.localStorage.setItem('pass', sha256(pass1).toString())
             setOk(true)
         }else{
             setErr(true);

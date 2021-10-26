@@ -4,8 +4,8 @@ import {Box, TextField, Button, InputAdornment, Paper} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import FingerprintTwoToneIcon from '@mui/icons-material/FingerprintTwoTone';
-
-import sha256 from 'crypto-js/sha256';
+import aes from 'crypto-js/aes';
+import enc from 'crypto-js/enc-utf8'
 import Connect from './Connect';
 const System = () => {
     const [pass, setPass] = useState('');
@@ -17,9 +17,20 @@ const System = () => {
         }
     },[])
     const login = ()=> {
-        if(pass.length>0 && sha256(pass).toString() === localStorage.getItem('pass')){
-            window.sessionStorage.setItem('pass',window.btoa(pass));
-            setLogged(true);
+        if(pass.length>0 && localStorage.getItem('csv_url')!==null){
+            let URLbytes,URL
+            try{
+                URLbytes = aes.decrypt(window.localStorage.getItem('csv_url'), pass)
+                URL = URLbytes.toString(enc);
+                if(URL!==''){
+                    window.sessionStorage.setItem('pass',window.btoa(pass));
+                    setLogged(true);
+                }else{
+                    setErr(true)
+                }
+            }catch{
+                setErr(true)
+            }
         }else{
             setErr(true)
         }
