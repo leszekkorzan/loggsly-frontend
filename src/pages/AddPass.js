@@ -78,7 +78,7 @@ const AddPass = () => {
                             <>
                             <Alert sx={{textAlign: 'left', m:2, maxWidth:'300px',marginLeft:'auto',marginRight:'auto'}} severity="success">
                                 <AlertTitle>Success</AlertTitle>
-                                Password has been added!
+                                Password has been added! Changes can be seen in a few minutes.
                             </Alert>
                             <Button onClick={()=>window.location = '/add-password'} variant='contained'>Ok</Button>
                             </>

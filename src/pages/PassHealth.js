@@ -3,6 +3,7 @@ import { Container, Card, Avatar, Box, Typography, Button} from '@mui/material';
 import aes from 'crypto-js/aes';
 import sha1 from 'crypto-js/sha1';
 import enc from 'crypto-js/enc-utf8';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -38,6 +39,10 @@ const HealthElm = ({website,login,pass}) => {
             <Box sx={{display:'flex',flexDirection:'column'}}>
                 <Typography variant='h6' sx={{fontWeight:'bold'}}>{website}</Typography>
                 <Typography fontSize='15px'>{login}</Typography>
+            </Box>
+            <Box sx={{marginLeft:'auto',width:'70px'}}>
+                <PasswordStrengthBar password={pass} />
+                {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>LEAKED!</Typography>}
             </Box>
 
         </Card>
