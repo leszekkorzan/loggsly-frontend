@@ -42,7 +42,7 @@ const HealthElm = ({website,login,pass}) => {
             </Box>
             <Box sx={{marginLeft:'auto',width:'70px'}}>
                 <PasswordStrengthBar password={pass} />
-                {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>LEAKED!</Typography>}
+                {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>WYCIEK!</Typography>}
             </Box>
 
         </Card>
@@ -66,7 +66,7 @@ const PassHealth = () => {
     }
     return(
         <Container sx={{color:'#fff',textAlign:'center', pt:5}}>
-            <Typography variant='h5'>Passwords Health Check</Typography>
+            <Typography variant='h5'>Bezpieczeństwo Haseł</Typography>
             {show ? (
                 <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
                     {data.map(elm=>
@@ -77,10 +77,10 @@ const PassHealth = () => {
             ) : (
                 <Box >
                     
-                    <Typography>I understand that the password hashes parts will be uploaded to the haveibeenpwned.com server.</Typography>
+                    <Typography>Rozumiem, że fragmenty hashy zapisanych haseł zostaną przesłane do usługi haveibeenpwned.com.</Typography>
                     <Checkbox checked={enable} onClick={()=>setEnable(!enable)}/>
                     <br></br>
-                    <Button sx={{mt:1}} disabled={!enable} onClick={()=>setShow(true)} variant='contained'>Check</Button>
+                    <Button sx={{mt:1}} disabled={!enable} onClick={()=>setShow(true)} variant='contained'>Sprawdź</Button>
                 </Box>
             )}
 

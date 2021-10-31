@@ -45,10 +45,10 @@ const Connect = () => {
             {err &&
             <Box sx={{marginLeft:'auto',marginRight:'auto',maxWidth:'400px'}}>
                 <Alert sx={{textAlign:'left'}} severity="error" >
-                    <AlertTitle>Error</AlertTitle>
-                    An error has occurred with the database!
+                    <AlertTitle>Błąd</AlertTitle>
+                    Wystąpił problem z bazą danych!
                 </Alert>
-                <Button sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>Reset config</Button>
+                <Button sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>reset ustawień</Button>
             </Box>
             }
             {data!==null && !err ? <Passes data={data} pass={password}/> : null}

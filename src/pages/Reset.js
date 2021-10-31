@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Reset = ()=> {
     const resetFn = () => {
-        if(window.confirm('Are you sure?')){
+        if(window.confirm('Czy na pewno chcesz zresetować ustawienia?')){
             localStorage.clear();
             sessionStorage.clear();
             window.location = '/';
@@ -13,7 +13,7 @@ const Reset = ()=> {
     return(
         <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#fff'}}>
             <Typography sx={{my:3}} variant='h5'>
-                Reset Config
+                Reset Ustawień
             </Typography>
             <Accordion>
                 <AccordionSummary
@@ -24,8 +24,8 @@ const Reset = ()=> {
                 <Typography>Reset</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography sx={{mb:1}}>All config data on this device will be lost!</Typography>
-                    <Button onClick={resetFn} variant='contained'>RESET NOW</Button>
+                    <Typography sx={{mb:1}}>Wszystkie ustawienia zostaną usunięte z tego urządzenia!</Typography>
+                    <Button onClick={resetFn} variant='contained'>USUŃ</Button>
                 </AccordionDetails>
             </Accordion>
         </Container>

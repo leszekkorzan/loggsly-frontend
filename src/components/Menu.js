@@ -12,6 +12,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import DescriptionIcon from '@mui/icons-material/Description';
+import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 
 import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
@@ -61,7 +62,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <VpnKeyIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Your Passwords" />
+                        <ListItemText primary="Twoje hasła" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -69,7 +70,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <AddCircleOutlineIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Add Password" />
+                        <ListItemText primary="Dodaj hasło" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -77,7 +78,15 @@ const Menu = () => {
                         <ListItemIcon>
                             <SecurityIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Passwords Security" />
+                        <ListItemText primary="Bezpieczeństwo haseł" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component='a' href='/password-generator'>
+                        <ListItemIcon>
+                            <EnhancedEncryptionIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Generator haseł" />
                         </ListItemButton>
                     </ListItem>
                 </>
@@ -87,7 +96,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <DescriptionIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Documentation" />
+                    <ListItemText primary="Dokumentacja" />
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{my:2}}/>
@@ -96,7 +105,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Settings" />
+                    <ListItemText primary="Ustawienia" />
                     </ListItemButton>
                 </ListItem>
                 {logged &&
@@ -105,7 +114,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <LogoutIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Logout" />
+                        <ListItemText primary="Wyloguj" />
                         </ListItemButton>
                     </ListItem>
                 }

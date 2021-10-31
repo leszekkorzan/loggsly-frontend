@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Container, Typography, TextField, Button, Divider, Link, Alert, AlertTitle } from '@mui/material';
+import { Container, Typography, TextField, Button, Divider, Alert, AlertTitle, Paper } from '@mui/material';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 
@@ -37,17 +37,17 @@ const AddPass = () => {
                 if(res.success){
                     setSuccess(true)
                 }else{
-                    setErr('API returned an error');
+                    setErr('API zwróciło błąd.');
                     setLoading(false)
                 }
             })
             .catch(err => {
                 setLoading(false)
-                setErr('An error has occurred with API.')
+                setErr('Wystąpił problem z API.')
             });
 
         }else{
-            setErr('An error has occurred with the input data.');
+            setErr('Dane wejściowe są nieprawidłowe.');
             setLoading(false);
         }
     }
@@ -56,29 +56,29 @@ const AddPass = () => {
         <>
         {window.sessionStorage.getItem('pass')!==null &&
             <Container sx={{mt:5,color:'#fff',textAlign:'center'}}>
-                <Typography variant='h5'>Add new password from app</Typography>
+                <Typography variant='h5'>Dodaj nowe hasło z aplikacji</Typography>
                 <br></br>
                 {window.localStorage.getItem('manage_api')!==null ? (
                     <div>
                         {!success ? (
-                            <>
-                                <TextField disabled={loading} value={website} onChange={(e)=>setwebsite(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='account website*'/>
+                            <Paper sx={{maxWidth:'400px',p:2,marginLeft:'auto',marginRight:'auto'}}>
+                                <TextField disabled={loading} value={website} onChange={(e)=>setwebsite(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='strona*'/>
                                 <br></br>
-                                <TextField disabled={loading} value={login} onChange={(e)=>setLogin(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='account login*'/>
+                                <TextField disabled={loading} value={login} onChange={(e)=>setLogin(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='login*'/>
                                 <br></br>
-                                <TextField disabled={loading} value={password} onChange={(e)=>setPassword(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='account password*'/>
+                                <TextField disabled={loading} value={password} onChange={(e)=>setPassword(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='hasło*'/>
                                 <br></br>
-                                <TextField disabled={loading} value={category} onChange={(e)=>setCategory(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='account category'/>
+                                <TextField disabled={loading} value={category} onChange={(e)=>setCategory(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='kategoria'/>
                                 <br></br>
-                                <Button disabled={loading} onClick={addPass} sx={{m:1}} variant='contained'>Add</Button>
+                                <Button disabled={loading} onClick={addPass} sx={{m:1}} variant='contained'>Dodaj</Button>
                                 <Typography sx={{fontSize:'14px', color:'#f44336'}}>{err}</Typography>
-                                <Typography sx={{fontSize:'15px'}}>{loading && 'Adding...'}</Typography>
-                            </>
+                                <Typography sx={{fontSize:'15px'}}>{loading && 'Dodawanie...'}</Typography>
+                            </Paper>    
                         ): (
                             <>
                             <Alert sx={{textAlign: 'left', m:2, maxWidth:'300px',marginLeft:'auto',marginRight:'auto'}} severity="success">
-                                <AlertTitle>Success</AlertTitle>
-                                Password has been added! Changes can be seen in a few minutes.
+                                <AlertTitle>Sukces</AlertTitle>
+                                Hasło zostało dodane! Zmiany będą widoczne w ciągu kilku minut.
                             </Alert>
                             <Button onClick={()=>window.location = '/add-password'} variant='contained'>Ok</Button>
                             </>
@@ -87,24 +87,24 @@ const AddPass = () => {
                     </div>
                 ):(
                     <>
-                    <Typography>First, you need to configure the ability to add remotely (<Link href='#'>guide here</Link>).</Typography>
+                    <Typography>Najpierw należy skonfigurować możliwość dodawania haseł z aplikacji.</Typography>
                     <br></br>
-                    <Button href='/settings' sx={{mt:1}} variant='outlined'>Configure</Button>
+                    <Button href='/settings' sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
                     </>
                 )}
                 <Divider sx={{my:2}}/>
-                <Typography variant='h5'>Add new password manually</Typography>
+                <Typography variant='h5'>Dodaj nowe hasło manualnie</Typography>
                 <br></br>
-                <TextField sx={{minWidth:'300px'}} value={passInpt} onChange={(e)=>setPassInpt(e.target.value)} label="password to encode" variant="outlined" />
+                <TextField sx={{minWidth:'300px'}} value={passInpt} onChange={(e)=>setPassInpt(e.target.value)} label="hasło*" variant="outlined" />
                 <br></br>
-                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Encrypt</Button>
+                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zaszyfruj</Button>
                 <br></br>
                 <Typography sx={{wordBreak:'break-all'}}><i>{encrypted}</i></Typography>
                 <br></br>
                 {encrypted.length>0 &&
                     <>
-                        <Typography>Paste above hash as a password in your Google Sheet.</Typography>
-                        <Button onClick={() => copy(encrypted)} sx={{m:1}} variant='outlined'>Copy</Button>
+                        <Typography>Wklej powyższy hash do Twojego arkusza Google Sheet.</Typography>
+                        <Button onClick={() => copy(encrypted)} sx={{m:1}} variant='outlined'>Skopiuj</Button>
                     </>
                 }
             </Container>

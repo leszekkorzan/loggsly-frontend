@@ -58,27 +58,27 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
     const id = open ? 'simple-popover' : undefined;
 
     const remove = () => {
-        if(window.confirm('Are you sure you want to delete this password?') && window.localStorage.getItem('manage_api')!==null){
+        if(window.confirm('Czy na pewno usunąć to hasło?') && window.localStorage.getItem('manage_api')!==null){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
             window.fetch(`${URL}?type=remove&id=${index}`).then(res => res.json())
             .then(res => {
                 if(res.success){
-                    window.alert('Removed! Changes can be seen in a few minutes.');
+                    window.alert('Usunięto! Zmiany będą widoczne w ciągu kilku minut.');
                     window.location = '/';
                 }else{
-                    window.alert('API returned an error');
+                    window.alert('API zwróciło błąd.');
                     window.location = '/';
                 }
             })
             .catch(err => {
-                window.alert('An error has occurred with API.');
+                window.alert('Wystąpił problem z API.');
                 window.location = '/';
             });
         }
     }
     const update = () => {
-        if(window.confirm('Are you sure you want to update this password?') && window.localStorage.getItem('manage_api')!==null && websiteField.length>0 && loginField.length>0 && passField.length>0){
+        if(window.confirm('Czy na pewno zaktualizować to hasło?') && window.localStorage.getItem('manage_api')!==null && websiteField.length>0 && loginField.length>0 && passField.length>0){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
             setAdding(true);
@@ -88,24 +88,24 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                     window.fetch(`${URL}?type=add&website=${websiteField}&login=${window.btoa(loginField)}&password=${window.btoa(aes.encrypt(passField, mainpass).toString())}&category=${categoryField}`).then(res => res.json())
                     .then(res => {
                         if(res.success){
-                            window.alert('Updated! Changes can be seen in a few minutes.');
+                            window.alert('Zaktualizowano! Zmiany będą widoczne w ciągu kilku minut.');
                             window.location = '/';
                         }else{
-                            window.alert('adding API returned an error');
+                            window.alert('Adding_API zwróciło błąd.');
                             setAdding(false);
                         }
                     })
                     .catch(err => {
-                        window.alert('An error has occurred with adding API.')
+                        window.alert('Wystąpił problem z adding_API.')
                         setAdding(false);
                     });
                 }else{
-                    window.alert('removing API returned an error');
+                    window.alert('Removing_API zwróciło błąd.');
                     setAdding(false);
                 }
             })
             .catch(err => {
-                window.alert('An error has occurred with removing API.');
+                window.alert('Wystąpił problem z removing_API.');
                 setAdding(false);
             });
         }
@@ -166,15 +166,15 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             onClose={()=>setOpenModal(false)}
         >
             <Box sx={style}>
-                <TextField disabled={adding} value={websiteField} onChange={(e)=>setWebsiteField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='account website*'/>
-                <TextField disabled={adding} value={loginField} onChange={(e)=>setLoginField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='account login*'/>
-                <TextField disabled={adding} value={passField} onChange={(e)=>setPassField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='account password*'/>
-                <TextField disabled={adding} value={categoryField} onChange={(e)=>setCategoryField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='account category'/>
+                <TextField disabled={adding} value={websiteField} onChange={(e)=>setWebsiteField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='strona*'/>
+                <TextField disabled={adding} value={loginField} onChange={(e)=>setLoginField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='login*'/>
+                <TextField disabled={adding} value={passField} onChange={(e)=>setPassField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='hasło*'/>
+                <TextField disabled={adding} value={categoryField} onChange={(e)=>setCategoryField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='kategoria'/>
                 <Box sx={{display:'flex'}}>
-                    <Button disabled={adding} onClick={update} variant='contained' sx={{marginLeft:'auto'}}>Save</Button>
+                    <Button disabled={adding} onClick={update} variant='contained' sx={{marginLeft:'auto'}}>Zapisz</Button>
                 </Box>
                 {adding &&
-                    <Typography sx={{textAlign:'center'}}>Updating...</Typography>
+                    <Typography sx={{textAlign:'center'}}>Aktualizuję...</Typography>
                 }
             </Box>
         </Modal>
@@ -200,11 +200,11 @@ const Passes = ({data, pass}) => {
     const [edit,setEdit] = useState(false);
     return(
         <>
-        <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:'280px', marginLeft:'auto',marginRight:'auto'}} variant='outlined' placeholder='search'/>
+        <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:'280px', marginLeft:'auto',marginRight:'auto'}} variant='outlined' placeholder='wyszukaj'/>
         {window.localStorage.getItem('manage_api')!==null && (
             <>
                 {!edit ? (
-                    <Button onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>Manage Passwords</Button>
+                    <Button onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>Zarządzaj hasłami</Button>
                 ):(
                     <Button onClick={()=>window.location = '/'} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
                 )}

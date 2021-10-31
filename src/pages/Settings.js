@@ -17,28 +17,28 @@ const Settings = () => {
     const encrypt = () => {
         if(apiInpt === ""){
             window.localStorage.removeItem('manage_api');
-            window.alert('Disabled!')
+            window.alert('Wyłączono!')
         }else{
             const text = aes.encrypt(apiInpt, pass).toString();
             window.localStorage.setItem('manage_api', text);
-            window.alert('Enabled!')
+            window.alert('Włączono!')
         }
     }
 
     return(
         <Container sx={{mt:5,color:'#fff',textAlign:'center'}}>
-            <Button href='/reset' sx={{mb:2}} variant='outlined'>Reset App</Button>
+            <Button href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
             <br></br>
             {window.sessionStorage.getItem('pass')!==null &&
             <>
                 <Divider/>
                 <br></br>
-                <Typography variant='h5'>Configuration of password management from the application</Typography>
-                <Link href='#'>Follow instructions here</Link>
+                <Typography variant='h5'>Konfiguracja zarządzania hasłami z aplikacji</Typography>
+                <Link href='#'>Instrukcja tutaj</Link>
                 <br></br>
-                <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="enter appscript API endpoint" variant="outlined" />
+                <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
                 <br></br>
-                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Save</Button>
+                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
             </>
             }
         </Container>

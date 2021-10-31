@@ -42,7 +42,7 @@ const System = () => {
                 <FingerprintTwoToneIcon sx={{fontSize:'100px', mb:5}}/>
                 <br></br>
                 <form onSubmit={e => login() & e.preventDefault()}style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <TextField sx={{minWidth:'320px'}} fullWidth autoFocus error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' label="enter password" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),endAdornment: (<InputAdornment position="end"><Button onClick={login} variant='outlined'><ArrowForwardTwoToneIcon /></Button></InputAdornment>)}}/>
+                    <TextField sx={{minWidth:'320px'}} fullWidth autoFocus error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' label="podaj hasło główne" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),endAdornment: (<InputAdornment position="end"><Button onClick={login} variant='outlined'><ArrowForwardTwoToneIcon /></Button></InputAdornment>)}}/>
                 </form>
 
             </Paper>
