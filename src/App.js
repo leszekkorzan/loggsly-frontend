@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   BrowserRouter as Router,
@@ -12,6 +12,12 @@ import Settings from './pages/Settings';
 import PassHealth from './pages/PassHealth';
 import AddPass from './pages/AddPass';
 import PassGenerator from './pages/PassGenerator';
+import CloudSave from './pages/CloudSave';
+
+import {setGlobalState} from './components/state';
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const auth = getAuth();
 
 const App = ()=> {
   const darkTheme = createTheme({
@@ -19,6 +25,15 @@ const App = ()=> {
       mode: 'dark',
     },
   });
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setGlobalState('logged',true)
+      } else {
+        setGlobalState('logged',false)
+      }
+    });
+  },[])
 
   return (
     <Router>
@@ -39,6 +54,9 @@ const App = ()=> {
           </Route>
           <Route path="/password-generator">
             <PassGenerator/>
+          </Route>
+          <Route path="/cloudsave">
+            <CloudSave/>
           </Route>
           <Route path="/">
             <Dashboard/>

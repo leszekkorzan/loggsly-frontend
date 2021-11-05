@@ -13,6 +13,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
+import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 
 import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
@@ -40,7 +41,7 @@ const Menu = () => {
                 <Toolbar style={{background: '#081a2e'}}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         <Link sx={{textDecoration:'none',color:'#fff'}} href='/'>
-                            Pass Manager
+                            Loggsly
                         </Link>
                     </Typography>
                     <IconButton onClick={()=>setOpen(true)}>
@@ -100,6 +101,14 @@ const Menu = () => {
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{my:2}}/>
+                <ListItem disablePadding>
+                    <ListItemButton component='a' href='/cloudsave'>
+                    <ListItemIcon>
+                        <CloudCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Cloud Save" />
+                    </ListItemButton>
+                </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton component='a' href='/settings'>
                     <ListItemIcon>

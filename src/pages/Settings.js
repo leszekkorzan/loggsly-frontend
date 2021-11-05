@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import { Container, Typography, TextField, Button, Divider, Link } from '@mui/material';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
+import {useGlobalState} from '../components/state';
 
 const Settings = () => {
+    const [logged] = useGlobalState('logged')
+
     const pass = window.atob(window.sessionStorage.getItem('pass'));
     const [apiInpt, setApiInpt] = useState('');
     useEffect(()=>{
@@ -27,20 +30,30 @@ const Settings = () => {
 
     return(
         <Container sx={{mt:5,color:'#fff',textAlign:'center'}}>
-            <Button href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
-            <br></br>
-            {window.sessionStorage.getItem('pass')!==null &&
-            <>
-                <Divider/>
-                <br></br>
-                <Typography variant='h5'>Konfiguracja zarządzania hasłami z aplikacji</Typography>
-                <Link href='#'>Instrukcja tutaj</Link>
-                <br></br>
-                <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
-                <br></br>
-                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
-            </>
-            }
+            {!logged ? (
+                <>
+                    <Button href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
+                    <br></br>
+                    {window.sessionStorage.getItem('pass')!==null &&
+                    <>
+                        <Divider/>
+                        <br></br>
+                        <Typography variant='h5'>Konfiguracja zarządzania hasłami z aplikacji</Typography>
+                        <Link href='#'>Instrukcja tutaj</Link>
+                        <br></br>
+                        <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
+                        <br></br>
+                        <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
+                    </>
+                    }
+                </>
+            ) : (
+                <>
+                <Typography sx={{m:1,color:'#f44336'}}>W trybie Cloud Save ustawienia lokalne są niedostępne.</Typography>
+                <Button href='/cloudsave' variant='contained'>Panel Cloud Save</Button>
+                </>
+            )}
+
         </Container>
     )
 }

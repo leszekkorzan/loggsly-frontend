@@ -104,7 +104,7 @@ const AddPass = () => {
                 {encrypted.length>0 &&
                     <>
                         <Typography>Wklej powyższy hash do Twojego arkusza Google Sheet.</Typography>
-                        <Button onClick={() => copy(encrypted)} sx={{m:1}} variant='outlined'>Skopiuj</Button>
+                        <Button onClick={() => copy(encrypted)} sx={{m:1,mb:5}} variant='outlined'>Skopiuj</Button>
                     </>
                 }
             </Container>

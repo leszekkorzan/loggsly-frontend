@@ -1,8 +1,10 @@
 import React from 'react';
 import {Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {useGlobalState} from '../components/state';
 
 const Reset = ()=> {
+    const [logged] = useGlobalState('logged')
     const resetFn = () => {
         if(window.confirm('Czy na pewno chcesz zresetować ustawienia?')){
             localStorage.clear();
@@ -25,7 +27,8 @@ const Reset = ()=> {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{mb:1}}>Wszystkie ustawienia zostaną usunięte z tego urządzenia!</Typography>
-                    <Button onClick={resetFn} variant='contained'>USUŃ</Button>
+                    <Button disabled={logged} onClick={resetFn} variant='contained'>USUŃ</Button>
+                    {logged && <Typography sx={{m:1,color:'#f44336'}}>W trybie Cloud Save nie można wyzerować aplikacji lokalnie.</Typography>}
                 </AccordionDetails>
             </Accordion>
         </Container>

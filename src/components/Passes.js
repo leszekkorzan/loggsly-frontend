@@ -61,6 +61,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
         if(window.confirm('Czy na pewno usunąć to hasło?') && window.localStorage.getItem('manage_api')!==null){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
+            console.log(URL)
             window.fetch(`${URL}?type=remove&id=${index}`).then(res => res.json())
             .then(res => {
                 if(res.success){
@@ -158,7 +159,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             horizontal: 'left',
             }}
         >
-            <Typography sx={{ p: 2 }}>{pass}</Typography>
+            <Typography sx={{ p:2,overflowX:'scroll' }}>{pass}</Typography>
         </Popover>
 
         <Modal
@@ -206,7 +207,7 @@ const Passes = ({data, pass}) => {
                 {!edit ? (
                     <Button onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>Zarządzaj hasłami</Button>
                 ):(
-                    <Button onClick={()=>window.location = '/'} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
+                    <Button onClick={()=>setEdit(false)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
                 )}
             </>
         )}

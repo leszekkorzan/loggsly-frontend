@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {Container, Typography, Paper, Slider, FormControlLabel, Checkbox, Box, TextField, IconButton, Button} from '@mui/material';
+import {Container, Typography, Paper, Slider, FormControlLabel, Checkbox, Box, TextField, Button} from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import copy from 'copy-to-clipboard';
 
@@ -45,14 +45,13 @@ const PassGenerator = ()=> {
                 </Box>
                 <Box sx={{m:1,mt:3}}>
                     <Typography>Długość hasła</Typography>
-                    <Slider defaultValue={12} onChange={(e)=>setLength(e.target.value)} valueLabelDisplay='auto' min={5} max={51} marks={[{value:5,label:'5'},{value:50,label:'50'}]} />
+                    <Slider defaultValue={12} onChange={(e)=>setLength(e.target.value)} valueLabelDisplay='auto' min={5} max={50} marks={[{value:5,label:'5'},{value:50,label:'50'}]} />
                 </Box>
                 <Box>
                     <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isNum} onClick={()=>setIsNum(!isNum)} />} label="cyfry" />
                     <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isSym} onClick={()=>setIsSym(!isSym)} />} label="symbole" />
                     <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isLowerCase} onClick={()=>setIsLowerCase(!isLowerCase)} />} label="małe litery" />
                     <FormControlLabel control={<Checkbox checked={isUpperCase} onClick={()=>setIsUpperCase(!isUpperCase)} />} label="duże litery" />
-
                 </Box>
             </Paper>
         </Container>
