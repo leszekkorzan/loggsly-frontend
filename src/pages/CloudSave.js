@@ -241,33 +241,33 @@ const CloudSave = () => {
         fetchUser()
     },[])
     return(
-        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#fff',mt:5}}>
+        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000',mt:5}}>
             {!data && !loading && (
                 <Paper sx={{p:2}}>
                     <Typography variant='h5'>Loggsly Cloud Save</Typography>
-                    <Button onClick={login} variant='contained' sx={{my:2}}>Zaloguj się z Google</Button>
+                    <Button color='error' onClick={login} variant='contained' sx={{my:2}}>Zaloguj się z Google</Button>
                     <Typography sx={{fontSize:'14px', color:'#f44336'}}>{err}</Typography>
                     <Divider/>
                     <Typography sx={{mt:1,fontSize:'14px'}}>Uwaga! Po zalogowaniu profil zapisany lokalnie zostanie usunięty z tego urządzenia.</Typography>
                 </Paper>
             )}
             {loading && (
-                <CircularProgress/>
+                <CircularProgress color='error'/>
             )}
             {data && !loading && (
                 <div>
-                    <Typography variant='h6'>Witaj {data.email}!</Typography>
-                    <Button sx={{my:1}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
+                    <Typography variant='h5'>Witaj {data.email}!</Typography>
+                    <Button color='error' sx={{my:1}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
                     <div>
                         {activated ? (
                             <Container>
                                 <form action={`${url}/manage`} method="POST">
                                     <input type='hidden' name="token" value={token} />
-                                    <Button variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
+                                    <Button color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
                                 </form>
                                 <Divider sx={{my:2}}/>
                                 {!edit ? (
-                                    <Button onClick={getData} disabled={dataLoading} variant='contained'>Zarządzaj profilami</Button>
+                                    <Button color='error' onClick={getData} disabled={dataLoading} variant='contained'>Zarządzaj profilami</Button>
                                 ) : (
                                     <Box>
                                         <Accordion sx={{mb:2}}>
@@ -279,7 +279,6 @@ const CloudSave = () => {
                                             <Typography>Dodaj profil</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails>
-                                                {/* tu dokonczyc form dodajacy profil (nazwa, csv_db, haslo glowne (tylko lokalnie do zaszyfrowania)) */}
                                                 <Box>
                                                     <TextField value={addingName} onChange={(e)=>setAddingName(e.target.value)} disabled={addingLoading} label='Nazwa profilu' sx={{m:1}}/>
                                                     <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label='CSV Link' sx={{m:1}}/>
@@ -313,7 +312,7 @@ const CloudSave = () => {
                             <Container>
                                 <form action={`${url}/checkout`} method="POST">
                                     <input type='hidden' name="token" value={token} />
-                                    <Button variant='contained' type='submit'>Płatność</Button>
+                                    <Button color='error' variant='contained' type='submit'>Płatność</Button>
                                 </form>
                             </Container>
                         )}

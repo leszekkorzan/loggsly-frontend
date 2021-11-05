@@ -55,22 +55,22 @@ const AddPass = () => {
     return(
         <>
         {window.sessionStorage.getItem('pass')!==null &&
-            <Container sx={{mt:5,color:'#fff',textAlign:'center'}}>
+            <Container sx={{mt:5,color:'#000',textAlign:'center'}}>
                 <Typography variant='h5'>Dodaj nowe hasło z aplikacji</Typography>
                 <br></br>
                 {window.localStorage.getItem('manage_api')!==null ? (
                     <div>
                         {!success ? (
                             <Paper sx={{maxWidth:'400px',p:2,marginLeft:'auto',marginRight:'auto'}}>
-                                <TextField disabled={loading} value={website} onChange={(e)=>setwebsite(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='strona*'/>
+                                <TextField disabled={loading} value={website} onChange={(e)=>setwebsite(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='strona*' variant='filled'/>
                                 <br></br>
-                                <TextField disabled={loading} value={login} onChange={(e)=>setLogin(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='login*'/>
+                                <TextField disabled={loading} value={login} onChange={(e)=>setLogin(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='login*' variant='filled'/>
                                 <br></br>
-                                <TextField disabled={loading} value={password} onChange={(e)=>setPassword(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='hasło*'/>
+                                <TextField disabled={loading} value={password} onChange={(e)=>setPassword(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='hasło*' variant='filled'/>
                                 <br></br>
-                                <TextField disabled={loading} value={category} onChange={(e)=>setCategory(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='kategoria'/>
+                                <TextField disabled={loading} value={category} onChange={(e)=>setCategory(e.target.value)} sx={{minWidth:'300px', m:1}} type='text' placeholder='kategoria' variant='filled'/>
                                 <br></br>
-                                <Button disabled={loading} onClick={addPass} sx={{m:1}} variant='contained'>Dodaj</Button>
+                                <Button color='error' disabled={loading} onClick={addPass} sx={{m:1}} variant='contained'>Dodaj</Button>
                                 <Typography sx={{fontSize:'14px', color:'#f44336'}}>{err}</Typography>
                                 <Typography sx={{fontSize:'15px'}}>{loading && 'Dodawanie...'}</Typography>
                             </Paper>    
@@ -80,7 +80,7 @@ const AddPass = () => {
                                 <AlertTitle>Sukces</AlertTitle>
                                 Hasło zostało dodane! Zmiany będą widoczne w ciągu kilku minut.
                             </Alert>
-                            <Button onClick={()=>window.location = '/add-password'} variant='contained'>Ok</Button>
+                            <Button color='error' onClick={()=>window.location = '/add-password'} variant='contained'>Ok</Button>
                             </>
                         )}
 
@@ -89,24 +89,26 @@ const AddPass = () => {
                     <>
                     <Typography>Najpierw należy skonfigurować możliwość dodawania haseł z aplikacji.</Typography>
                     <br></br>
-                    <Button href='/settings' sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
+                    <Button color='error' href='/settings' sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
                     </>
                 )}
                 <Divider sx={{my:2}}/>
                 <Typography variant='h5'>Dodaj nowe hasło manualnie</Typography>
-                <br></br>
-                <TextField sx={{minWidth:'300px'}} value={passInpt} onChange={(e)=>setPassInpt(e.target.value)} label="hasło*" variant="outlined" />
-                <br></br>
-                <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zaszyfruj</Button>
-                <br></br>
-                <Typography sx={{wordBreak:'break-all'}}><i>{encrypted}</i></Typography>
-                <br></br>
-                {encrypted.length>0 &&
-                    <>
-                        <Typography>Wklej powyższy hash do Twojego arkusza Google Sheet.</Typography>
-                        <Button onClick={() => copy(encrypted)} sx={{m:1,mb:5}} variant='outlined'>Skopiuj</Button>
-                    </>
-                }
+                <Paper sx={{p:[1,2],mt:2,ml:'auto',mr:'auto',maxWidth:'400px'}}>
+                    <TextField sx={{minWidth:'300px'}} value={passInpt} onChange={(e)=>setPassInpt(e.target.value)} label="hasło*" variant="filled" />
+                    <br></br>
+                    <Button color='error' onClick={encrypt} sx={{m:1}} variant='contained'>Zaszyfruj</Button>
+                    <br></br>
+                    <Typography sx={{wordBreak:'break-all'}}><i>{encrypted}</i></Typography>
+                    <br></br>
+                    {encrypted.length>0 &&
+                        <>
+                            <Typography>Wklej powyższy hash do Twojego arkusza Google Sheet.</Typography>
+                            <Button color='error' onClick={()=> copy(encrypted)} sx={{m:1,mb:5}} variant='outlined'>Skopiuj</Button>
+                        </>
+                    }
+                </Paper>
+
             </Container>
         }
         </>

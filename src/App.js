@@ -23,7 +23,7 @@ const App = ()=> {
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
-    },
+    }
   });
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {

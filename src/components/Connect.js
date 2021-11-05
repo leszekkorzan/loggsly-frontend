@@ -41,14 +41,14 @@ const Connect = () => {
      }, []);
     return(
         <>
-            {loading && <CircularProgress sx={{marginLeft:'auto',marginRight:'auto'}}/>}
+            {loading && <CircularProgress color='error' sx={{marginLeft:'auto',marginRight:'auto'}}/>}
             {err &&
             <Box sx={{marginLeft:'auto',marginRight:'auto',maxWidth:'400px'}}>
                 <Alert sx={{textAlign:'left'}} severity="error" >
                     <AlertTitle>Błąd</AlertTitle>
                     Wystąpił problem z bazą danych!
                 </Alert>
-                <Button sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>reset ustawień</Button>
+                <Button color='error' sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>reset ustawień</Button>
             </Box>
             }
             {data!==null && !err ? <Passes data={data} pass={password}/> : null}

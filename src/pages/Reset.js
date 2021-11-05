@@ -13,7 +13,7 @@ const Reset = ()=> {
         }
     }
     return(
-        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#fff'}}>
+        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000'}}>
             <Typography sx={{my:3}} variant='h5'>
                 Reset Ustawień
             </Typography>
@@ -27,7 +27,7 @@ const Reset = ()=> {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{mb:1}}>Wszystkie ustawienia zostaną usunięte z tego urządzenia!</Typography>
-                    <Button disabled={logged} onClick={resetFn} variant='contained'>USUŃ</Button>
+                    <Button color='error' disabled={logged} onClick={resetFn} variant='contained'>USUŃ</Button>
                     {logged && <Typography sx={{m:1,color:'#f44336'}}>W trybie Cloud Save nie można wyzerować aplikacji lokalnie.</Typography>}
                 </AccordionDetails>
             </Accordion>

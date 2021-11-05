@@ -24,6 +24,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
+import logo from '../assets/logo-white.svg';
+
 const Menu = () => {
     const [open, setOpen] = useState(false);
     const [logged, setLogged] = useState(false);
@@ -38,10 +40,10 @@ const Menu = () => {
         <>
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar style={{background: '#081a2e'}}>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Toolbar style={{background: '#ed1c25'}}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1,mt:1 }}>
                         <Link sx={{textDecoration:'none',color:'#fff'}} href='/'>
-                            Loggsly
+                            <img style={{maxWidth:'160px'}} src={logo} alt='Loggsly logo'/>
                         </Link>
                     </Typography>
                     <IconButton onClick={()=>setOpen(true)}>

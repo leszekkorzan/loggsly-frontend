@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { Container, Card, Avatar, Box, Typography, Button} from '@mui/material';
+import { Container, Avatar, Box, Typography, Button, Paper} from '@mui/material';
 import aes from 'crypto-js/aes';
 import sha1 from 'crypto-js/sha1';
 import enc from 'crypto-js/enc-utf8';
@@ -7,7 +7,6 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ErrorIcon from '@mui/icons-material/Error';
-import Checkbox from '@mui/material/Checkbox';
 const HealthElm = ({website,login,pass}) => {
     const hash = sha1(pass).toString();
     const range = hash.slice(0,5);
@@ -31,7 +30,7 @@ const HealthElm = ({website,login,pass}) => {
 
     return(
         <>
-        <Card style={{border: leaked&&'2px solid #f44336'}} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
+        <Paper elevation={8} style={{border: leaked&&'2px solid #f44336'}} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
             <Avatar sx={{mr:2,height:'45px',width:'45px'}}>
                 {leaked && <ErrorIcon sx={{fontSize:'35px', color:'#fff'}}/>}
                 {!leaked && <LockIcon sx={{fontSize:'35px', color:'#fff'}}/>}
@@ -45,7 +44,7 @@ const HealthElm = ({website,login,pass}) => {
                 {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>WYCIEK!</Typography>}
             </Box>
 
-        </Card>
+        </Paper>
         </>
     )
 }
@@ -54,7 +53,6 @@ const HealthElm = ({website,login,pass}) => {
 
 const PassHealth = () => {
     const [show,setShow] = useState(false);
-    const [enable,setEnable] = useState(false);
     const decrypt = (text,key) =>{
         var bytes  = aes.decrypt(text, key);
         var decrypted = bytes.toString(enc);
@@ -62,10 +60,10 @@ const PassHealth = () => {
     }
     const data = JSON.parse(window.sessionStorage.getItem('csv_data'))    
     if(!data){
-        return <Typography sx={{color:'#fff',textAlign:'center',mt:5}}>SessionStorage is empty. <a style={{color:'#90caf9'}} href='/'>Click here to reload app</a></Typography>
+        return <Typography sx={{color:'#000',textAlign:'center',mt:5}}>SessionStorage is empty. <a style={{color:'#90caf9'}} href='/'>Click here to reload app</a></Typography>
     }
     return(
-        <Container sx={{color:'#fff',textAlign:'center', pt:5}}>
+        <Container sx={{color:'#000',textAlign:'center', pt:5}}>
             <Typography variant='h5'>Bezpieczeństwo Haseł</Typography>
             {show ? (
                 <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
@@ -76,11 +74,8 @@ const PassHealth = () => {
                 </Container>
             ) : (
                 <Box >
-                    
                     <Typography>Rozumiem, że fragmenty hashy zapisanych haseł zostaną przesłane do usługi haveibeenpwned.com.</Typography>
-                    <Checkbox checked={enable} onClick={()=>setEnable(!enable)}/>
-                    <br></br>
-                    <Button sx={{mt:1}} disabled={!enable} onClick={()=>setShow(true)} variant='contained'>Sprawdź</Button>
+                    <Button color='error' sx={{mt:1}} onClick={()=>setShow(true)} variant='contained'>Sprawdź</Button>
                 </Box>
             )}
 

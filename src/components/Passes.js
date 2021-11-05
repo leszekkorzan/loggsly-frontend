@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Container, Card, Avatar, Box, Typography, IconButton, Popover, Tooltip, TextField, Button, Modal} from '@mui/material';
+import { Container, Avatar, Box, Typography, IconButton, Popover, Tooltip, TextField, Button, Modal, Paper} from '@mui/material';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -115,7 +115,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 
     return(
         <>
-        <Card sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
+        <Paper elevation={8} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
             <Tooltip title={category}>
             <Avatar sx={{mr:1,height:'45px',width:'45px'}}>
                 <LockIcon sx={{color:'#fff'}} />
@@ -148,7 +148,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 
             </Box>
 
-        </Card>
+        </Paper>
         <Popover
             id={id}
             open={open}
@@ -201,16 +201,20 @@ const Passes = ({data, pass}) => {
     const [edit,setEdit] = useState(false);
     return(
         <>
-        <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:'280px', marginLeft:'auto',marginRight:'auto'}} variant='outlined' placeholder='wyszukaj'/>
-        {window.localStorage.getItem('manage_api')!==null && (
-            <>
+        <Paper sx={{p:1,ml:'auto',mr:'auto'}}>
+            <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:['280px','400px'], marginLeft:'auto',marginRight:'auto'}} variant='filled' placeholder='wyszukaj'/>
+            <br></br>
+            {window.localStorage.getItem('manage_api')!==null && (
+            <Box sx={{m:1}}>
                 {!edit ? (
-                    <Button onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>Zarządzaj hasłami</Button>
+                    <Button color='error' onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='contained'>Zarządzaj hasłami</Button>
                 ):(
-                    <Button onClick={()=>setEdit(false)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
+                    <Button color='error' onClick={()=>setEdit(false)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
                 )}
-            </>
+            </Box>
         )}
+        </Paper>
+
         <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
             {filteredData.map((elm)=>
                 <AccountElm index={elm.index} edit={edit} mainpass={pass} website={elm.website} login={elm.login} pass={decrypt(elm.password, pass)} category={elm.category}/>

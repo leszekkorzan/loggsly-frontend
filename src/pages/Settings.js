@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Typography, TextField, Button, Divider, Link } from '@mui/material';
+import { Container, Typography, TextField, Button, Divider, Link, Paper } from '@mui/material';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 import {useGlobalState} from '../components/state';
@@ -11,9 +11,13 @@ const Settings = () => {
     const [apiInpt, setApiInpt] = useState('');
     useEffect(()=>{
         if(window.localStorage.getItem('manage_api')!==null){
-            var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
-            var URL = URLbytes.toString(enc);
-            setApiInpt(URL);
+            try{
+                var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
+                var URL = URLbytes.toString(enc);
+                setApiInpt(URL);
+            }catch{
+                console.log('err parsing data')
+            }
         }
     },[])
 
@@ -29,10 +33,10 @@ const Settings = () => {
     }
 
     return(
-        <Container sx={{mt:5,color:'#fff',textAlign:'center'}}>
+        <Container sx={{mt:5,color:'#000',textAlign:'center'}}>
             {!logged ? (
                 <>
-                    <Button href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
+                    <Button color='error' href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
                     <br></br>
                     {window.sessionStorage.getItem('pass')!==null &&
                     <>
@@ -41,16 +45,18 @@ const Settings = () => {
                         <Typography variant='h5'>Konfiguracja zarządzania hasłami z aplikacji</Typography>
                         <Link href='#'>Instrukcja tutaj</Link>
                         <br></br>
-                        <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
-                        <br></br>
-                        <Button onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
+                        <Paper sx={{p:1,mt:2,maxWidth:'400px',ml:'auto',mr:'auto'}}>
+                            <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
+                            <br></br>
+                            <Button color='error' onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
+                        </Paper>
                     </>
                     }
                 </>
             ) : (
                 <>
-                <Typography sx={{m:1,color:'#f44336'}}>W trybie Cloud Save ustawienia lokalne są niedostępne.</Typography>
-                <Button href='/cloudsave' variant='contained'>Panel Cloud Save</Button>
+                <Typography sx={{m:1,color:'#000'}}>W trybie Cloud Save ustawienia lokalne są niedostępne.</Typography>
+                <Button color='error' href='/cloudsave' variant='contained'>Panel Cloud Save</Button>
                 </>
             )}
 

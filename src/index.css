@@ -1,4 +1,15 @@
 body {
   margin: 0;
-  background: #132f4c;
+  /* background: #132f4c; */
+  background-image: url('./assets/bg.jpeg');
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: 0.3s;
+}
+.redBtn{
+  background-color: #ed1c25 !important;
+  color: #fff !important;
+}
+.redBtn:hover{
+  background-color: #f44336 !important;
 }
