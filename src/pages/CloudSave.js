@@ -138,7 +138,7 @@ const CloudSave = () => {
     if(window.location.hostname==='localhost'){
         url='http://localhost:4000'
     }else{
-        url=''
+        url='https://loggsly.herokuapp.com'
     }
 
     const fetchUser = () => {

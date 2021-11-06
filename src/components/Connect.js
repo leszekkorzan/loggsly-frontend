@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
-import { Alert, AlertTitle, Button, Box, Typography} from '@mui/material';
+import { Alert, AlertTitle, Button, Box } from '@mui/material';
 import RingLoader from 'react-spinners/RingLoader';
 import logoOnly from '../assets/logo-only-red.svg';
 
@@ -12,10 +12,6 @@ const Connect = () => {
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
-
-    const width = window.innerWidth
-        || document.documentElement.clientWidth
-        || document.body.clientWidth;
 
     const password = window.atob(window.sessionStorage.getItem('pass'));
     var URLbytes  = aes.decrypt(window.localStorage.getItem('csv_url'), password);
