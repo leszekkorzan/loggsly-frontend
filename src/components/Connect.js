@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
-import {CircularProgress, Alert, AlertTitle, Button, Box} from '@mui/material';
+import { Alert, AlertTitle, Button, Box, Typography} from '@mui/material';
+import RingLoader from 'react-spinners/RingLoader';
+import logoOnly from '../assets/logo-only-red.svg';
+
 import Papa from 'papaparse';
 import Passes from './Passes';
 
@@ -9,6 +12,10 @@ const Connect = () => {
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
+
+    const width = window.innerWidth
+        || document.documentElement.clientWidth
+        || document.body.clientWidth;
 
     const password = window.atob(window.sessionStorage.getItem('pass'));
     var URLbytes  = aes.decrypt(window.localStorage.getItem('csv_url'), password);
@@ -23,25 +30,32 @@ const Connect = () => {
                 setErr(true)
             },
             complete: function(results) {
-                setLoading(false)
-                if(results){
-                    var data = results.data
-                    if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
-                        setErr(false)
-                        setData(data)
-                        window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                setTimeout(()=>{
+                    setLoading(false)
+                    if(results){
+                        var data = results.data
+                        if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
+                            setErr(false)
+                            setData(data)
+                            window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                        }else{
+                            setErr(true)
+                        }
                     }else{
                         setErr(true)
                     }
-                }else{
-                    setErr(true)
-                }
+                },1300)
             }
         })
      }, []);
     return(
         <>
-            {loading && <CircularProgress color='error' sx={{marginLeft:'auto',marginRight:'auto'}}/>}
+            {loading && (
+                <Box sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'50vh'}}>
+                    <RingLoader css={{marginRight:'25px',marginBottom:'25px'}} color='#ed1c25' loading={loading} size='150px' />
+                    <img className='loaderImg' style={{width:'100px',position:'absolute'}} src={logoOnly} alt='Loggsly logo' />
+                </Box>
+            )}
             {err &&
             <Box sx={{marginLeft:'auto',marginRight:'auto',maxWidth:'400px'}}>
                 <Alert sx={{textAlign:'left'}} severity="error" >

@@ -15,7 +15,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,6 +23,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+
+import {Link} from 'react-router-dom';
 
 import logo from '../assets/logo-white.svg';
 
@@ -42,7 +44,7 @@ const Menu = () => {
             <AppBar position="static">
                 <Toolbar style={{background: '#ed1c25'}}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1,mt:1 }}>
-                        <Link sx={{textDecoration:'none',color:'#fff'}} href='/'>
+                        <Link to='/'>
                             <img style={{maxWidth:'160px'}} src={logo} alt='Loggsly logo'/>
                         </Link>
                     </Typography>
@@ -66,7 +68,7 @@ const Menu = () => {
                             <VpnKeyIcon />
                         </ListItemIcon>
                         <ListItemText primary="Twoje hasła" />
-                        </ListItemButton>
+                    </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton component='a' href='/add-password'>

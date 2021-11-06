@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
 } from "react-router-dom";
 import Dashboard from './pages/Dashboard';
@@ -39,29 +39,15 @@ const App = ()=> {
     <Router>
       <ThemeProvider theme={darkTheme}>
         <Menu/>
-        <Switch>
-          <Route path="/reset">
-            <Reset/>
-          </Route>
-          <Route path="/settings">
-            <Settings/>
-          </Route>
-          <Route path="/passwords-health">
-            <PassHealth/>
-          </Route>
-          <Route path="/add-password">
-            <AddPass/>
-          </Route>
-          <Route path="/password-generator">
-            <PassGenerator/>
-          </Route>
-          <Route path="/cloudsave">
-            <CloudSave/>
-          </Route>
-          <Route path="/">
-            <Dashboard/>
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/reset" element={<Reset/>} />
+          <Route path="/settings" element={<Settings/>} />
+          <Route path="/passwords-health" element={<PassHealth/>} />
+          <Route path="/add-password" element={<AddPass/>} />
+          <Route path="/password-generator" element={<PassGenerator/>} />
+          <Route path="/cloudsave" element={<CloudSave/>} />
+          <Route path="/" element={<Dashboard/>} />
+        </Routes>
       </ThemeProvider>
     </Router>
 
