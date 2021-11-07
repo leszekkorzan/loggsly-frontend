@@ -66,13 +66,14 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             .then(res => {
                 if(res.success){
                     window.alert('Usunięto! Zmiany będą widoczne w ciągu kilku minut.');
-                    window.location = '/';
+                    sessionStorage.setItem('updated',new Date().toISOString());
+                    window.location.reload(true)
                 }else{
                     window.alert('API zwróciło błąd.');
                     window.location = '/';
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 window.alert('Wystąpił problem z API.');
                 window.location = '/';
             });
@@ -90,13 +91,14 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                     .then(res => {
                         if(res.success){
                             window.alert('Zaktualizowano! Zmiany będą widoczne w ciągu kilku minut.');
-                            window.location = '/';
+                            sessionStorage.setItem('updated',new Date().toISOString());
+                            window.location.reload(true);
                         }else{
                             window.alert('Adding_API zwróciło błąd.');
                             setAdding(false);
                         }
                     })
-                    .catch(err => {
+                    .catch(() => {
                         window.alert('Wystąpił problem z adding_API.')
                         setAdding(false);
                     });
@@ -105,7 +107,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                     setAdding(false);
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 window.alert('Wystąpił problem z removing_API.');
                 setAdding(false);
             });

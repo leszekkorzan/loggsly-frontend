@@ -35,13 +35,14 @@ const AddPass = () => {
             window.fetch(`${URL}?type=add&website=${website}&login=${window.btoa(login)}&password=${window.btoa(aes.encrypt(password, pass).toString())}&category=${category}`).then(res => res.json())
             .then(res => {
                 if(res.success){
-                    setSuccess(true)
+                    sessionStorage.setItem('updated',new Date().toISOString());
+                    setSuccess(true);
                 }else{
                     setErr('API zwróciło błąd.');
                     setLoading(false)
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 setLoading(false)
                 setErr('Wystąpił problem z API.')
             });
@@ -89,7 +90,7 @@ const AddPass = () => {
                     <>
                     <Typography>Najpierw należy skonfigurować możliwość dodawania haseł z aplikacji.</Typography>
                     <br></br>
-                    <Button color='error' href='/settings' sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
+                    <Button color='error' onClick={()=>window.location.reload(true)} sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
                     </>
                 )}
                 <Divider sx={{my:2}}/>

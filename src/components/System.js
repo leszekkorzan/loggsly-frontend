@@ -57,6 +57,7 @@ const System = () => {
         });
     },[])
     const login = ()=> {
+        sessionStorage.setItem('updated',new Date().toISOString())
         if(cloud && pass.length>0 && parsedDataDb[select].csv){
             window.localStorage.setItem('csv_url', parsedDataDb[select].csv)
             let URLbytes,URL

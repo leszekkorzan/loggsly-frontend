@@ -32,7 +32,7 @@ const PassGenerator = ()=> {
 
 
     return(
-        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#fff'}}>
+        <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000'}}>
             <Typography sx={{my:3}} variant='h5'>
                 Generator Haseł
             </Typography>

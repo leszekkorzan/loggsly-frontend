@@ -136,7 +136,8 @@ const CloudSave = () => {
 
     let url;
     if(window.location.hostname==='localhost'){
-        url='http://localhost:4000'
+        // url='http://localhost:4000'
+        url='https://loggsly.herokuapp.com'
     }else{
         url='https://loggsly.herokuapp.com'
     }
@@ -258,6 +259,7 @@ const CloudSave = () => {
                 <div>
                     <Typography variant='h5'>Witaj {data.email}!</Typography>
                     <Button color='error' sx={{my:1}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
+                    <Button color='error' sx={{my:1, ml:1}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
                     <div>
                         {activated ? (
                             <Container>
@@ -279,7 +281,7 @@ const CloudSave = () => {
                                             <Typography>Dodaj profil</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails>
-                                                <Box>
+                                                <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'center',flexDirection:['column','row']}}>
                                                     <TextField value={addingName} onChange={(e)=>setAddingName(e.target.value)} disabled={addingLoading} label='Nazwa profilu' sx={{m:1}}/>
                                                     <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label='CSV Link' sx={{m:1}}/>
                                                     <TextField value={addingPass} onChange={(e)=>setAddingPass(e.target.value)} disabled={addingLoading} type='password' label='hasło główne profilu' sx={{m:1}}/>

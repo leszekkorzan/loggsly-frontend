@@ -13,20 +13,22 @@ const Connect = () => {
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
 
+    const updated = window.sessionStorage.getItem('updated') || '';
+
     const password = window.atob(window.sessionStorage.getItem('pass'));
     var URLbytes  = aes.decrypt(window.localStorage.getItem('csv_url'), password);
     var URL = URLbytes.toString(enc);
 
     useEffect(() => {
-        Papa.parse(URL, {
-            download: true,
-            header: true,
-            error: function() {
-                setLoading(false)
-                setErr(true)
-            },
-            complete: function(results) {
-                setTimeout(()=>{
+        setTimeout(()=>{
+            Papa.parse(`${URL}&_=${updated}`, {
+                download: true,
+                header: true,
+                error: function() {
+                    setLoading(false)
+                    setErr(true)
+                },
+                complete: function(results) {
                     setLoading(false)
                     if(results){
                         var data = results.data
@@ -40,9 +42,10 @@ const Connect = () => {
                     }else{
                         setErr(true)
                     }
-                },1300)
-            }
-        })
+                }
+            })
+        },1300)
+
      }, []);
     return(
         <>

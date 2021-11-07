@@ -97,7 +97,7 @@ const Menu = () => {
                 </>
                 }
                 <ListItem disablePadding>
-                    <ListItemButton component='a' href='/' target='_blank'>
+                    <ListItemButton component='a' href='https://docs.loggsly.com/' target='_blank'>
                     <ListItemIcon>
                         <DescriptionIcon />
                     </ListItemIcon>
