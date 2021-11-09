@@ -11,7 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SecurityIcon from '@mui/icons-material/Security';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import DescriptionIcon from '@mui/icons-material/Description';
+import HelpIcon from '@mui/icons-material/Help';
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 
@@ -99,9 +99,9 @@ const Menu = () => {
                 <ListItem disablePadding>
                     <ListItemButton component='a' href='https://docs.loggsly.com/' target='_blank'>
                     <ListItemIcon>
-                        <DescriptionIcon />
+                        <HelpIcon/>
                     </ListItemIcon>
-                    <ListItemText primary="Dokumentacja" />
+                    <ListItemText primary="Pomoc" />
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{my:2}}/>

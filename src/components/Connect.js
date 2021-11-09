@@ -20,40 +20,64 @@ const Connect = () => {
     var URL = URLbytes.toString(enc);
 
     useEffect(() => {
-        setTimeout(()=>{
-            Papa.parse(`${URL}&_=${updated}`, {
-                download: true,
-                header: true,
-                error: function() {
-                    setLoading(false)
-                    setErr(true)
-                },
-                complete: function(results) {
-                    setLoading(false)
-                    if(results){
-                        var data = results.data
-                        if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
-                            setErr(false)
-                            setData(data)
-                            window.sessionStorage.setItem('csv_data',JSON.stringify(data))
-                        }else{
-                            setErr(true)
-                        }
+        if(URL.toLowerCase().startsWith('https://script.google.com/')){
+            window.fetch(`${URL}?type=view`).then(res => res.json())
+            .then(results => {
+                setLoading(false)
+                if(results){
+                    var data = results
+                    if(['website','login','password','category'].every(elm => Object.keys(results[0]).includes(elm))){
+                        setErr(false)
+                        setData(data)
+                        window.sessionStorage.setItem('csv_data',JSON.stringify(data))
                     }else{
                         setErr(true)
                     }
+                }else{
+                    setErr(true)
                 }
             })
-        },1300)
-
+            .catch(() => {
+                setLoading(false)
+                setErr(true)
+            });
+        }else{
+            setTimeout(()=>{
+                Papa.parse(`${URL}&_=${updated}`, {
+                    download: true,
+                    header: true,
+                    error: function() {
+                        setLoading(false)
+                        setErr(true)
+                    },
+                    complete: function(results) {
+                        setLoading(false)
+                        if(results){
+                            var data = results.data
+                            if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
+                                setErr(false)
+                                setData(data)
+                                window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                            }else{
+                                setErr(true)
+                            }
+                        }else{
+                            setErr(true)
+                        }
+                    }
+                })  
+            },1300)
+        }
      }, []);
     return(
         <>
             {loading && (
+                <>
                 <Box sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'50vh'}}>
                     <RingLoader css={{marginRight:'25px',marginBottom:'25px'}} color='#ed1c25' loading={loading} size='150px' />
                     <img className='loaderImg' style={{width:'100px',position:'absolute'}} src={logoOnly} alt='Loggsly logo' />
                 </Box>
+                </>
             )}
             {err &&
             <Box sx={{marginLeft:'auto',marginRight:'auto',maxWidth:'400px'}}>

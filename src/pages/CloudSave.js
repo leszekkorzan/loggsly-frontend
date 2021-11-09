@@ -9,6 +9,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SyncIcon from '@mui/icons-material/Sync';
 
+import LogoutIcon from '@mui/icons-material/Logout';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import PaymentIcon from '@mui/icons-material/Payment';
+
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 
@@ -175,7 +179,7 @@ const CloudSave = () => {
         window.localStorage.clear();
         window.sessionStorage.clear();
         signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(() => {
             fetchUser();
         }).catch((error) => {
             setErr(error.message);
@@ -218,10 +222,21 @@ const CloudSave = () => {
             setAddingLoading(true);
             setAddingErr('')
 
-            push(ref(db, 'users/' + data.uid + '/data'), {
-                name: addingName,
-                csv: aes.encrypt(addingCSV, addingPass).toString()
-            }).then(()=>{
+            let refData;
+            if(addingCSV.toLowerCase().startsWith('https://script.google.com/')){
+                refData = {
+                    name: addingName,
+                    csv: aes.encrypt(addingCSV, addingPass).toString(),
+                    api: aes.encrypt(addingCSV, addingPass).toString()
+                }
+            }else{
+                refData = {
+                    name: addingName,
+                    csv: aes.encrypt(addingCSV, addingPass).toString()
+                }
+            }
+
+            push(ref(db, 'users/' + data.uid + '/data'), refData).then(()=>{
                 setAddingLoading(false);
                 window.alert('Profil dodano pomyślnie!')
                 setAddingName('');
@@ -258,15 +273,20 @@ const CloudSave = () => {
             {data && !loading && (
                 <div>
                     <Typography variant='h5'>Witaj {data.email}!</Typography>
-                    <Button color='error' sx={{my:1}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
-                    <Button color='error' sx={{my:1, ml:1}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
+                    <Box>
+                        <Button startIcon={<LogoutIcon/>} color='error' sx={{m:0.5}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
+                        <Button startIcon={<RefreshIcon/>} color='error' sx={{m:0.5}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
+                        {activated &&
+                            <form action={`${url}/manage`} method="POST">
+                                <input type='hidden' name="token" value={token} />
+                                <Button startIcon={<PaymentIcon/>} sx={{m:0.5}} color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
+                            </form>
+                        } 
+                    </Box>
+
                     <div>
                         {activated ? (
                             <Container>
-                                <form action={`${url}/manage`} method="POST">
-                                    <input type='hidden' name="token" value={token} />
-                                    <Button color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
-                                </form>
                                 <Divider sx={{my:2}}/>
                                 {!edit ? (
                                     <Button color='error' onClick={getData} disabled={dataLoading} variant='contained'>Zarządzaj profilami</Button>
@@ -283,15 +303,15 @@ const CloudSave = () => {
                                             <AccordionDetails>
                                                 <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'center',flexDirection:['column','row']}}>
                                                     <TextField value={addingName} onChange={(e)=>setAddingName(e.target.value)} disabled={addingLoading} label='Nazwa profilu' sx={{m:1}}/>
-                                                    <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label='CSV Link' sx={{m:1}}/>
+                                                    <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label='Link CSV lub API' sx={{m:1}}/>
                                                     <TextField value={addingPass} onChange={(e)=>setAddingPass(e.target.value)} disabled={addingLoading} type='password' label='hasło główne profilu' sx={{m:1}}/>
                                                     <TextField value={addingPass2} onChange={(e)=>setAddingPass2(e.target.value)} disabled={addingLoading} type='password' label='powtórz hasło główne' sx={{m:1}}/>
 
                                                     <Button onClick={addProfile} disabled={addingLoading} sx={{my:1}} variant='contained'>Dodaj</Button>
-
-                                                    <Typography sx={{fontSize:'14px', color:'#f44336'}}>{addingErr}</Typography>
-                                                    <Typography sx={{fontSize:'15px'}}>{addingLoading && 'Dodawanie...'}</Typography>
                                                 </Box>
+                                                <br></br>
+                                                <Typography sx={{fontSize:'14px', color:'#f44336'}}>{addingErr}</Typography>
+                                                <Typography sx={{fontSize:'15px'}}>{addingLoading && 'Dodawanie...'}</Typography>
                                             </AccordionDetails>
                                         </Accordion>
                                         {!dataDb ? (
