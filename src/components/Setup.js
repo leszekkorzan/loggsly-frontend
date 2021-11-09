@@ -15,6 +15,9 @@ const Setup = () => {
     const save = () => {
         if(url.length > 5 && pass1.length > 1 && pass1 === pass2){
             window.localStorage.setItem('csv_url', aes.encrypt(url, pass1).toString())
+            if(url.toLowerCase().startsWith('https://script.google.com/')){
+                window.localStorage.setItem('manage_api', aes.encrypt(url, pass1).toString())
+            }
             setOk(true)
         }else{
             setErr(true);
@@ -28,13 +31,13 @@ const Setup = () => {
                 {!ok ?
                     <Paper sx={{p:[1,2]}}>
                         <form>
-                            <TextField error={err} value={url} onChange={(e)=>setUrl(e.target.value)} sx={{m: 1}} type='url' label="Link CSV" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><StorageIcon /></InputAdornment>),}}/>
+                            <TextField error={err} value={url} onChange={(e)=>setUrl(e.target.value)} sx={{m: 1}} type='url' label="Link CSV lub API" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><StorageIcon /></InputAdornment>),}}/>
                             <br></br>
                             <TextField error={err}  value={pass1} onChange={(e)=>setPass1(e.target.value)} sx={{m: 1}} type='password' label="hasło główne" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),}}/>
                             <br></br>
                             <TextField error={err} value={pass2} onChange={(e)=>setPass2(e.target.value)} sx={{m: 1}} type='password' label="powtórz hasło główne" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),}}/>
                             <br></br>
-                            <Button onClick={save} variant="outlined">Zapisz</Button>
+                            <Button color='error' onClick={save} variant="contained">Zapisz</Button>
                         </form>   
                     </Paper>
 
