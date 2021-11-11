@@ -30,6 +30,7 @@ const Connect = () => {
                         setErr(false)
                         setData(data)
                         window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                        window.sessionStorage.setItem('API_fetch',true);
                     }else{
                         setErr(true)
                     }
