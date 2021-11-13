@@ -117,13 +117,13 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 
     return(
         <>
-        <Paper elevation={8} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', minWidth:'320px', maxWidth:'400px'}}>
+        <Paper elevation={8} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', width:['90%','330px']}}>
             <Tooltip title={category}>
             <Avatar sx={{mr:1,height:'45px',width:'45px'}}>
                 <LockIcon sx={{color:'#fff'}} />
             </Avatar>
             </Tooltip>
-            <Box sx={{display:'flex',flexDirection:'column'}}>
+            <Box sx={{display:'flex',flexDirection:'column',overflow:'auto'}}>
                 <Typography variant='h6' sx={{fontWeight:'bold'}}>{website}</Typography>
                 <Typography fontSize='15px'>{login}</Typography>
             </Box>
