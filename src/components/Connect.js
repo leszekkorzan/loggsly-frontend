@@ -21,7 +21,14 @@ const Connect = () => {
 
     useEffect(() => {
         if(URL.toLowerCase().startsWith('https://script.google.com/')){
-            window.fetch(`${URL}?type=view`).then(res => res.json())
+            window.fetch(URL,{
+                redirect:'follow',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({type:'view'})
+            }).then(res => res.json())
             .then(results => {
                 setLoading(false)
                 if(results){

@@ -27,7 +27,8 @@ const Setup = () => {
     return(
         <Box sx={{display: 'flex', justifyContent: 'center', mt:'100px', color: '#000', textAlign: 'center'}}>
             <div>
-                <Typography sx={{mb:1}} variant='h4'>Konfiguracja</Typography>
+                <Typography sx={{mb:2}} variant='h4'>Zaczynamy!</Typography>
+                <Button href='https://docs.loggsly.com/o-aplikacji/zaczynamy' target='_blank' sx={{mb:1}} color='error' variant="contained">Przeczytaj zanim rozpoczniesz</Button>
                 {!ok ?
                     <Paper sx={{p:[1,2]}}>
                         <form>

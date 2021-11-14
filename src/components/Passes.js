@@ -61,8 +61,14 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
         if(window.confirm('Czy na pewno usunąć to hasło?') && window.localStorage.getItem('manage_api')!==null){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
-            console.log(URL)
-            window.fetch(`${URL}?type=remove&id=${index}`).then(res => res.json())
+            window.fetch(URL,{
+                redirect:'follow',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({type:'remove',id:index})
+            }).then(res => res.json())
             .then(res => {
                 if(res.success){
                     window.alert('Usunięto! Zmiany będą widoczne w ciągu kilku minut.');
@@ -84,10 +90,24 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
             setAdding(true);
-            window.fetch(`${URL}?type=remove&id=${index}`).then(res => res.json())
+            window.fetch(URL,{
+                redirect:'follow',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({type:'remove',id:index})
+            }).then(res => res.json())
             .then(res => {
                 if(res.success){
-                    window.fetch(`${URL}?type=add&website=${websiteField}&login=${window.btoa(loginField)}&password=${window.btoa(aes.encrypt(passField, mainpass).toString())}&category=${categoryField}`).then(res => res.json())
+                    window.fetch(URL,{
+                        redirect:'follow',
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'text/plain;charset=utf-8'
+                        },
+                        body: JSON.stringify({type:'add',website:websiteField,login:window.btoa(loginField),password:window.btoa(aes.encrypt(passField, mainpass).toString()),category:categoryField})
+                    }).then(res => res.json())
                     .then(res => {
                         if(res.success){
                             window.alert('Zaktualizowano! Zmiany będą widoczne w ciągu kilku minut.');

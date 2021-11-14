@@ -32,7 +32,14 @@ const AddPass = () => {
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
             var URL = URLbytes.toString(enc);
 
-            window.fetch(`${URL}?type=add&website=${website}&login=${window.btoa(login)}&password=${window.btoa(aes.encrypt(password, pass).toString())}&category=${category}`).then(res => res.json())
+            window.fetch(URL,{
+                redirect:'follow',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({type:'add',website:website,login:window.btoa(login),password:window.btoa(aes.encrypt(password, pass).toString()),category:category})
+            }).then(res => res.json())
             .then(res => {
                 if(res.success){
                     sessionStorage.setItem('updated',new Date().toISOString());
