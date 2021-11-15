@@ -331,12 +331,27 @@ const CloudSave = () => {
                                 )}
                             </Container>
                         ) : (
-                            <Container>
-                                <form action={`${url}/checkout`} method="POST">
-                                    <input type='hidden' name="token" value={token} />
-                                    <Button color='error' variant='contained' type='submit'>Płatność</Button>
-                                </form>
-                            </Container>
+                            <Paper sx={{mt:3,p:2}}>
+                                <Typography variant='h5'>Wybierz rodzaj subskrypcji</Typography>
+                                <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'center'}}>
+                                    <Box sx={{m:2}}>
+                                        <form action={`${url}/checkout`} method="POST">
+                                            <input type='hidden' name="token" value={token} />
+                                            <input type='hidden' name="period" value='monthly' />
+                                            <Button startIcon={<PaymentIcon/>} color='error' variant='contained' type='submit'>11.99 zł/m-c</Button>
+                                        </form> 
+                                    </Box>
+                                    <Box sx={{m:2}}>
+                                        <form action={`${url}/checkout`} method="POST">
+                                            <input type='hidden' name="token" value={token} />
+                                            <input type='hidden' name="period" value='yearly' />
+                                            <Button startIcon={<PaymentIcon/>} color='error' variant='contained' type='submit'>119.99 zł/rok</Button>
+                                        </form>
+                                    </Box>
+
+                                </Box>   
+                            </Paper>
+
                         )}
                     </div>
                 </div>
