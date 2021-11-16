@@ -31,19 +31,9 @@ const Connect = () => {
             }).then(res => res.json())
             .then(results => {
                 setLoading(false)
-                if(results){
-                    var data = results
-                    if(['website','login','password','category'].every(elm => Object.keys(results[0]).includes(elm))){
-                        setErr(false)
-                        setData(data)
-                        window.sessionStorage.setItem('csv_data',JSON.stringify(data))
-                        window.sessionStorage.setItem('API_fetch',true);
-                    }else{
-                        setErr(true)
-                    }
-                }else{
-                    setErr(true)
-                }
+                setData(results)
+                window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                window.sessionStorage.setItem('API_fetch',true);
             })
             .catch(() => {
                 setLoading(false)

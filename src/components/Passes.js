@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Avatar, Box, Typography, IconButton, Popover, Tooltip, TextField, Button, Modal, Paper} from '@mui/material';
 
 import LockIcon from '@mui/icons-material/Lock';
@@ -206,6 +206,10 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 }
 
 const Passes = ({data, pass}) => {
+    const [query, setQuery] = useState('');
+    const [edit,setEdit] = useState(false);
+    const [err,setErr] = useState(false);
+
     const decrypt = (text,key) =>{
         var bytes  = aes.decrypt(text, key);
         var decrypted = bytes.toString(enc);
@@ -214,13 +218,18 @@ const Passes = ({data, pass}) => {
     data.map((elm,index)=>{
         data[index]['index'] = index.toString()
     })
-    const [query, setQuery] = useState('');
     const filteredData = data.filter(item => {
         return Object.keys(item).some(key =>
             item[key].toLowerCase().includes(query.toLowerCase())
         );
     });
-    const [edit,setEdit] = useState(false);
+    useEffect(()=>{
+        if(data.length>0){
+            if(!['website','login','password','category'].every(elm => Object.keys(data[0]).includes(elm))){
+                setErr(true)
+            }    
+        }
+    },[])
     return(
         <>
         <Paper sx={{p:1,ml:'auto',mr:'auto'}}>
@@ -236,12 +245,18 @@ const Passes = ({data, pass}) => {
             </Box>
         )}
         </Paper>
+        {!err && (
+            <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
+                {filteredData.map((elm)=>
+                    <>
+                    {elm.index && elm.website && elm.login && elm.password && (
+                        <AccountElm index={elm.index} edit={edit} mainpass={pass} website={elm.website} login={elm.login} pass={decrypt(elm.password, pass)} category={elm.category}/>
+                    )}
+                    </>
+                )}
+            </Container>
+        )}
 
-        <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
-            {filteredData.map((elm)=>
-                <AccountElm index={elm.index} edit={edit} mainpass={pass} website={elm.website} login={elm.login} pass={decrypt(elm.password, pass)} category={elm.category}/>
-            )}
-        </Container>
         </>
     )
 }

@@ -60,7 +60,7 @@ const PassHealth = () => {
     }
     const data = JSON.parse(window.sessionStorage.getItem('csv_data'))    
     if(!data){
-        return <Typography sx={{color:'#000',textAlign:'center',mt:5}}>SessionStorage is empty. <a style={{color:'#90caf9'}} href='/'>Click here to reload app</a></Typography>
+        return <Typography sx={{color:'#000',textAlign:'center',mt:5}}>Brak danych! <a style={{color:'#90caf9'}} href='/'>załaduj ponownie aplikację</a></Typography>
     }
     return(
         <Container sx={{color:'#000',textAlign:'center', pt:5}}>
