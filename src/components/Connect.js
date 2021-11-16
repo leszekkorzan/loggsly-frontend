@@ -12,7 +12,6 @@ const Connect = () => {
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
-
     const updated = window.sessionStorage.getItem('updated') || '';
 
     const password = window.atob(window.sessionStorage.getItem('pass'));
