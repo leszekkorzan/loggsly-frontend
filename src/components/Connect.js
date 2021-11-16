@@ -12,7 +12,6 @@ const Connect = () => {
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
-
     const updated = window.sessionStorage.getItem('updated') || '';
 
     const password = window.atob(window.sessionStorage.getItem('pass'));
@@ -32,7 +31,7 @@ const Connect = () => {
             .then(results => {
                 setLoading(false)
                 setData(results)
-                window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                window.sessionStorage.setItem('csv_data',JSON.stringify(results))
                 window.sessionStorage.setItem('API_fetch',true);
             })
             .catch(() => {
