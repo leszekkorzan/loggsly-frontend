@@ -32,7 +32,7 @@ const Connect = () => {
             .then(results => {
                 setLoading(false)
                 setData(results)
-                window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                window.sessionStorage.setItem('csv_data',JSON.stringify(results))
                 window.sessionStorage.setItem('API_fetch',true);
             })
             .catch(() => {
