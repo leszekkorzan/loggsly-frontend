@@ -48,8 +48,14 @@ const System = () => {
                     if(snapshot.exists()){
                         setParsedDataDb(Object.keys(snapshot.val()).map(key => snapshot.val()[key]))
                     }
-                }).catch(() => {
-                    window.alert("Wystąpił błąd podczas pobierania danych.")
+                }).catch((e) => {
+                    if(e.message === 'Permission denied'){
+                        window.alert("Brak dostępu do bazy danych! Sprawdź status swojej subskrypcji.")
+                        window.location='/cloudsave'
+                    }else{
+                        window.alert("Wystąpił błąd podczas pobierania danych.")
+                    }
+                    console.log(e.message)
                 });
             } else {
                 setCloud(false)
