@@ -48,9 +48,6 @@ const HealthElm = ({website,login,pass}) => {
         </>
     )
 }
-
-
-
 const PassHealth = () => {
     const [show,setShow] = useState(false);
     const decrypt = (text,key) =>{
