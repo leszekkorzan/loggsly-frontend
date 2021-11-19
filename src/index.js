@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import { onServiceWorkerUpdate } from '@3m1/service-worker-updater';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,5 +11,15 @@ ReactDOM.render(
   document.getElementById('root')
 );
 serviceWorkerRegistration.register({
-  onUpdate: onServiceWorkerUpdate
+  onUpdate: registration => {
+    const waitingServiceWorker = registration.waiting
+    if (waitingServiceWorker) {
+      waitingServiceWorker.addEventListener("statechange", event => {
+        if (event.target.state === "activated") {
+          window.location.reload()
+        }
+      });
+      waitingServiceWorker.postMessage({ type: "SKIP_WAITING" });
+    }
+  }
 });

@@ -274,12 +274,12 @@ const CloudSave = () => {
                 <div>
                     <Typography variant='h5'>Witaj {data.email}!</Typography>
                     <Box>
-                        <Button startIcon={<LogoutIcon/>} color='error' sx={{m:0.5}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
-                        <Button startIcon={<RefreshIcon/>} color='error' sx={{m:0.5}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
+                        <Button startIcon={<LogoutIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
+                        <Button startIcon={<RefreshIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
                         {activated &&
                             <form action={`${url}/manage`} method="POST">
                                 <input type='hidden' name="token" value={token} />
-                                <Button startIcon={<PaymentIcon/>} sx={{m:0.5}} color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
+                                <Button startIcon={<PaymentIcon/>} sx={{m:0.5,width:['90%','auto']}} color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
                             </form>
                         } 
                     </Box>

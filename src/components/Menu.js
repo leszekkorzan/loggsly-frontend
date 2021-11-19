@@ -28,12 +28,7 @@ import {Link} from 'react-router-dom';
 
 import logo from '../assets/logo-white.svg';
 
-import { withServiceWorkerUpdater } from '@3m1/service-worker-updater';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-
-const Menu = (props) => {
-    const {newServiceWorkerDetected, onLoadNewServiceWorkerAccept} = props;
+const Menu = () => {
     const [open, setOpen] = useState(false);
     const [logged, setLogged] = useState(false);
     useEffect(()=>{
@@ -138,20 +133,7 @@ const Menu = (props) => {
                 }
             </List>
         </Drawer>
-        {newServiceWorkerDetected &&
-            <Alert
-                sx={{m:2}}
-                severity="info"
-                action={
-                <Button onClick={onLoadNewServiceWorkerAccept} color="inherit" size="small">
-                    Wczytaj
-                </Button>
-                }
-                >
-                    Nowa wersja aplikacji jest dostępna!
-            </Alert>
-        }
         </>
     )
 }
-export default withServiceWorkerUpdater(Menu);
+export default Menu;
