@@ -220,7 +220,7 @@ const Passes = ({data, pass}) => {
     })
     const filteredData = data.filter(item => {
         return Object.keys(item).some(key =>
-            item[key].toLowerCase().includes(query.toLowerCase())
+            typeof item[key] === "string" && item[key].toLowerCase().includes(query.toLowerCase())
         );
     });
     useEffect(()=>{
