@@ -217,6 +217,7 @@ const Passes = ({data, pass}) => {
     }
     data.map((elm,index)=>{
         data[index]['index'] = index.toString()
+        return true
     })
     const filteredData = data.filter(item => {
         return Object.keys(item).some(key =>
@@ -256,7 +257,6 @@ const Passes = ({data, pass}) => {
                 )}
             </Container>
         )}
-
         </>
     )
 }

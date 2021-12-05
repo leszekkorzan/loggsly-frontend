@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, TextField, Button, InputAdornment, Paper, InputLabel, MenuItem, FormControl, Select, Typography} from '@mui/material';
+import {Box, TextField, Button, InputAdornment, Paper, InputLabel, MenuItem, FormControl, Select, Typography, CircularProgress} from '@mui/material';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
@@ -35,6 +35,8 @@ const System = () => {
     const [cloud,setCloud] = useState(false);
     const [parsedDataDb,setParsedDataDb] = useState(null);
     const [select, setSelect] = React.useState(0);
+    
+    const [dbLoading,setDbLoading] = React.useState(false);
 
     useEffect(()=>{
         if(window.sessionStorage.getItem('pass') !== null){
@@ -42,13 +44,16 @@ const System = () => {
         }
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                setDbLoading(true)
                 const dbRef = ref(db);
                 get(child(dbRef, `users/${user.uid}/data`)).then((snapshot) => {
                     setCloud(true)
+                    setDbLoading(false)
                     if(snapshot.exists()){
                         setParsedDataDb(Object.keys(snapshot.val()).map(key => snapshot.val()[key]))
                     }
                 }).catch((e) => {
+                    setDbLoading(false)
                     if(e.message === 'Permission denied'){
                         window.alert("Brak dostępu do bazy danych! Sprawdź status swojej subskrypcji.")
                         window.location='/cloudsave'
@@ -109,6 +114,9 @@ const System = () => {
             :<Paper sx={{marginLeft:'auto',marginRight:'auto',p:[2,5],borderRadius:'10px'}} elevation={8}>
                 <FingerprintTwoToneIcon sx={{fontSize:'100px', mb:5}}/>
                 <br></br>
+                {dbLoading && (
+                    <CircularProgress color='error'/>
+                )}
                 {cloud && parsedDataDb && (
                     <FormControl sx={{textAlign:'left'}} fullWidth>
                         <InputLabel id="profile-select-label">wybierz profil</InputLabel>
@@ -120,7 +128,7 @@ const System = () => {
                             onChange={(e)=>setSelect(e.target.value)}
                         >
                         {parsedDataDb.map((i,index)=>
-                            <MenuItem value={index}>{i.name}</MenuItem>
+                            <MenuItem key={index} value={index}>{i.name}</MenuItem>
                         )}
                         </Select>
                     </FormControl>
