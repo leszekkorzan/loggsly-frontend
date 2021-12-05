@@ -7,7 +7,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ErrorIcon from '@mui/icons-material/Error';
-const HealthElm = ({website,login,pass}) => {
+const HealthElm = ({index,website,login,pass}) => {
     const hash = sha1(pass).toString();
     const range = hash.slice(0,5);
     const suffix = hash.slice(5);
@@ -25,12 +25,13 @@ const HealthElm = ({website,login,pass}) => {
                 }
                 setLeaked(false)
             }
-        });
+        }).catch(()=>{
+            console.log('PASS_HEALTH API ERR')
+        })
     },[])
 
     return(
-        <>
-        <Paper elevation={8} style={{border: leaked&&'2px solid #f44336'}} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', width:['95%','310px']}}>
+        <Paper key={index} elevation={8} style={{border: leaked&&'2px solid #f44336'}} sx={{p:1, py:2, m:[1,2], textAlign:'left', display:'flex', alignItems:'center', width:['95%','310px']}}>
             <Avatar sx={{mr:2,height:'45px',width:'45px'}}>
                 {leaked && <ErrorIcon sx={{fontSize:'35px', color:'#fff'}}/>}
                 {!leaked && <LockIcon sx={{fontSize:'35px', color:'#fff'}}/>}
@@ -45,7 +46,6 @@ const HealthElm = ({website,login,pass}) => {
             </Box>
 
         </Paper>
-        </>
     )
 }
 const PassHealth = () => {
@@ -64,8 +64,8 @@ const PassHealth = () => {
             <Typography variant='h5'>Bezpieczeństwo Haseł</Typography>
             {show ? (
                 <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
-                    {data.map(elm=>
-                        <HealthElm website={elm.website} login={elm.login} pass={decrypt(elm.password, window.atob(window.sessionStorage.getItem('pass')))} />
+                    {data.map((elm,index)=>
+                        <HealthElm key={index} website={elm.website} login={elm.login} pass={decrypt(elm.password, window.atob(window.sessionStorage.getItem('pass')))} />
                     )}
 
                 </Container>

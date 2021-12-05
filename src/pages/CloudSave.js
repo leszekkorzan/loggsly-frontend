@@ -104,7 +104,7 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
     }
 
     return(
-        <Paper sx={{m:2,p:[1,2]}}>
+        <Paper key={index} sx={{m:2,p:[1,2]}}>
             <Typography variant='h6' sx={{textAlign:'left'}}>
                 {i.api && <SyncIcon sx={{position:'relative',top:'5px',mr:1}}/>}
                 {i.name}
@@ -138,13 +138,8 @@ const CloudSave = () => {
     const [activated,setActivated] = useState(false);
     const [token,setToken] = useState('');
 
-    let url;
-    if(window.location.hostname==='localhost'){
-        // url='http://localhost:4000'
-        url='https://loggsly.herokuapp.com'
-    }else{
-        url='https://loggsly.herokuapp.com'
-    }
+    let url = 'https://loggsly.herokuapp.com';
+    // url='http://localhost:4000'
 
     const fetchUser = () => {
         setLoading(true)
@@ -191,6 +186,8 @@ const CloudSave = () => {
             window.sessionStorage.clear();
             setData(null);
             window.location = '/cloudsave'
+        }).catch(()=>{
+            console.log('SIGN_OUT ERR')
         });
     }
 
@@ -321,7 +318,7 @@ const CloudSave = () => {
                                                 {parsedDataDb !== null &&
                                                     <>
                                                         {parsedDataDb.map((i,index)=>
-                                                            <ProfileElm i={i} index={index} dataDb={dataDb} userUID={data.uid} />
+                                                            <ProfileElm key={index} i={i} index={index} dataDb={dataDb} userUID={data.uid} />
                                                         )}
                                                     </>
                                                 }

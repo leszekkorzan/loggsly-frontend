@@ -43,6 +43,8 @@ export function register(config) {
             'This web app is being served cache-first by a service ' +
               'worker. To learn more, visit https://cra.link/PWA'
           );
+        }).catch(()=>{
+          console.log('SW ERR')
         });
       } else {
         // Is not localhost. Just register service worker
@@ -112,7 +114,11 @@ function checkValidServiceWorker(swUrl, config) {
         navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
             window.location.reload();
+          }).catch(()=>{
+            console.log('SW ERR')
           });
+        }).catch(()=>{
+          console.log('SW ERR')
         });
       } else {
         // Service worker found. Proceed as normal.

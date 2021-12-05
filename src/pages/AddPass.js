@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { Container, Typography, TextField, Button, Divider, Alert, AlertTitle, Paper } from '@mui/material';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
-
 import copy from 'copy-to-clipboard';
 
 const AddPass = () => {
@@ -24,7 +23,6 @@ const AddPass = () => {
         setEncrypted(text)
         setPassInpt('')
     }
-
     const addPass = () => {
         if(window.localStorage.getItem('manage_api')!==null && website.length>0 && login.length>0 && password.length>0){
             setErr('')
@@ -59,7 +57,6 @@ const AddPass = () => {
             setLoading(false);
         }
     }
-
     return(
         <>
         {window.sessionStorage.getItem('pass')!==null &&
@@ -91,13 +88,12 @@ const AddPass = () => {
                             <Button color='error' onClick={()=>window.location = '/add-password'} variant='contained'>Ok</Button>
                             </>
                         )}
-
                     </div>
                 ):(
                     <>
                     <Typography>Najpierw należy skonfigurować możliwość dodawania haseł z aplikacji.</Typography>
                     <br></br>
-                    <Button color='error' onClick={()=>window.location.reload(true)} sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
+                    <Button color='error' onClick={()=>window.location='/settings'} sx={{mt:1}} variant='outlined'>Konfiguracja</Button>
                     </>
                 )}
                 <Divider sx={{my:2}}/>
@@ -116,7 +112,6 @@ const AddPass = () => {
                         </>
                     }
                 </Paper>
-
             </Container>
         }
         </>
