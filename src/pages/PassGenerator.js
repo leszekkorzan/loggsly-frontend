@@ -13,6 +13,7 @@ const PassGenerator = ()=> {
     const [isUpperCase,setIsUpperCase] = useState(true);
 
     const [genPass,setGenPass] = useState('');
+    const [copyColor,setCopyColor] = useState('primary');
 
     useEffect(()=>{
         try{
@@ -29,8 +30,13 @@ const PassGenerator = ()=> {
         }
 
     },[length,isNum,isSym,isLowerCase,isUpperCase])
-
-
+    const copyFn = (text) => {
+        copy(text)
+        setCopyColor('success')
+        setTimeout(()=>{
+            setCopyColor('primary')
+        },1000)
+    } 
     return(
         <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000'}}>
             <Typography sx={{my:3}} variant='h5'>
@@ -39,7 +45,7 @@ const PassGenerator = ()=> {
             <Paper sx={{p:2,textAlign:'left'}}>
                 <Box sx={{display:'flex'}}>
                     <TextField fullWidth variant="outlined" value={genPass} disabled />
-                    <Button sx={{ml:1}} variant='outlined' onClick={()=> copy(genPass)}>
+                    <Button sx={{ml:1}} color={copyColor} variant='outlined' onClick={()=> copyFn(genPass)}>
                         <ContentCopyIcon />
                     </Button>
                 </Box>

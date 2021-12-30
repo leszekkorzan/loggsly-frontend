@@ -38,6 +38,8 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
     const [passField,setPassField] = useState(pass);
     const [categoryField,setCategoryField] = useState(category);
 
+    const [copyColor, setCopyColor] = useState('primary') 
+
     const openModalFn = () => {
         setWebsiteField(website)
         setLoginField(login)
@@ -132,8 +134,14 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                 setAdding(false);
             });
         }
-
     }
+    const copyFn = (text) => {
+        copy(text)
+        setCopyColor('success')
+        setTimeout(()=>{
+            setCopyColor('primary')
+        },1000)
+    } 
 
     return(
         <>
@@ -150,19 +158,19 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             <Box sx={{display:'flex', marginLeft:'auto'}}>
                 {!edit ? (
                     <>   
-                        <IconButton onClick={handleClick} variant='outlined' size="large">
+                        <IconButton color='primary' onClick={handleClick} variant='outlined' size="large">
                             <VisibilityIcon />
                         </IconButton>
-                        <IconButton variant='outlined' size="large" onClick={() => copy(pass)}>
+                        <IconButton color={copyColor} variant='outlined' size="large" onClick={() => copyFn(pass)}>
                             <ContentCopyIcon />
                         </IconButton>
                     </>
                 ): (
                     <>
-                        <IconButton onClick={openModalFn} variant='outlined' size="large">
+                        <IconButton color='primary' onClick={openModalFn} variant='outlined' size="large">
                             <EditIcon />
                         </IconButton>
-                        <IconButton onClick={remove} variant='outlined' size="large">
+                        <IconButton color='primary' onClick={remove} variant='outlined' size="large">
                             <DeleteIcon />
                         </IconButton>
                     </>
