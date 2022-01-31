@@ -18,6 +18,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hooks-global-state": "^1.0.2",
+    "react-intl": "^5.24.4",
     "react-password-strength-bar": "^0.4.0",
     "react-router-dom": "^6.0.1",
     "react-scripts": "^4.0.0",

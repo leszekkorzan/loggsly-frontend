@@ -2,13 +2,22 @@ import React, {useState, useEffect} from 'react';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 import { Alert, AlertTitle, Button, Box } from '@mui/material';
+import { useIntl } from 'react-intl';
 import RingLoader from 'react-spinners/RingLoader';
 import logoOnly from '../assets/logo-only-red.svg';
 
 import Papa from 'papaparse';
 import Passes from './Passes';
 
+const messages = {
+    error: { id: 'app.connect.error' },
+    dbError: { id: 'app.connect.dbError' },
+    reset: { id: 'app.connect.reset' },
+};
+
 const Connect = () => {
+    const intl = useIntl();
+
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState(false)
     const [data, setData] = useState(null)
@@ -79,10 +88,10 @@ const Connect = () => {
             {err &&
             <Box sx={{marginLeft:'auto',marginRight:'auto',maxWidth:'400px'}}>
                 <Alert sx={{textAlign:'left'}} severity="error" >
-                    <AlertTitle>Błąd</AlertTitle>
-                    Wystąpił problem z bazą danych!
+                    <AlertTitle>{intl.formatMessage(messages.error)}</AlertTitle>
+                    {intl.formatMessage(messages.dbError)}
                 </Alert>
-                <Button color='error' sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>reset ustawień</Button>
+                <Button color='error' sx={{m:1,textAlign:'center'}} variant='outlined' href='/reset'>{intl.formatMessage(messages.reset)}</Button>
             </Box>
             }
             {data!==null && !err ? <Passes data={data} pass={password}/> : null}

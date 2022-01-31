@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Avatar, Box, Typography, IconButton, Popover, Tooltip, TextField, Button, Modal, Paper} from '@mui/material';
+import { useIntl } from 'react-intl';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -12,6 +13,22 @@ import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 
 import copy from 'copy-to-clipboard';
+
+const messages = {
+    deletePassword: { id: 'app.passes.accountElm.deletePassword' },
+    deletedChangesSoon: { id: 'app.passes.accountElm.deletedChangesSoon' },
+    apiError: { id: 'app.passes.accountElm.apiError' },
+    updatePass: { id: 'app.passes.accountElm.updatePass' },
+    updatedChangesSoon: { id: 'app.passes.accountElm.updatedChangesSoon' },
+    website: { id: 'app.passes.accountElm.website' },
+    login: { id: 'app.passes.accountElm.login' },
+    pass: { id: 'app.passes.accountElm.pass' },
+    category: { id: 'app.passes.accountElm.category' },
+    save: { id: 'app.passes.accountElm.save' },
+    updating: { id: 'app.passes.accountElm.updating' },
+    search: { id: 'app.passes.search' },
+    managePasses: { id: 'app.passes.managePasses' },
+};
 
 const style = {
     color: '#fff',
@@ -29,6 +46,7 @@ const style = {
 };
 
 const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
+    const intl = useIntl();
     const [anchorEl, setAnchorEl] = useState(null);
     const [openModal, setOpenModal] = useState(false);
 
@@ -60,7 +78,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
     const id = open ? 'simple-popover' : undefined;
 
     const remove = () => {
-        if(window.confirm('Czy na pewno usunąć to hasło?') && window.localStorage.getItem('manage_api')!==null){
+        if(window.confirm(intl.formatMessage(messages.deletePassword)) && window.localStorage.getItem('manage_api')!==null){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
             window.fetch(URL,{
@@ -73,22 +91,22 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             }).then(res => res.json())
             .then(res => {
                 if(res.success){
-                    window.alert('Usunięto! Zmiany będą widoczne w ciągu kilku minut.');
+                    window.alert(intl.formatMessage(messages.deletedChangesSoon));
                     sessionStorage.setItem('updated',new Date().toISOString());
                     window.location.reload(true)
                 }else{
-                    window.alert('API zwróciło błąd.');
+                    window.alert(intl.formatMessage(messages.apiError));
                     window.location = '/';
                 }
             })
             .catch(() => {
-                window.alert('Wystąpił problem z API.');
+                window.alert(intl.formatMessage(messages.apiError));
                 window.location = '/';
             });
         }
     }
     const update = () => {
-        if(window.confirm('Czy na pewno zaktualizować to hasło?') && window.localStorage.getItem('manage_api')!==null && websiteField.length>0 && loginField.length>0 && passField.length>0){
+        if(window.confirm(intl.formatMessage(messages.updatePass)) && window.localStorage.getItem('manage_api')!==null && websiteField.length>0 && loginField.length>0 && passField.length>0){
             var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
             var URL = URLbytes.toString(enc);
             setAdding(true);
@@ -112,25 +130,25 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                     }).then(res => res.json())
                     .then(res => {
                         if(res.success){
-                            window.alert('Zaktualizowano! Zmiany będą widoczne w ciągu kilku minut.');
+                            window.alert(intl.formatMessage(messages.updatedChangesSoon));
                             sessionStorage.setItem('updated',new Date().toISOString());
                             window.location.reload(true);
                         }else{
-                            window.alert('Adding_API zwróciło błąd.');
+                            window.alert(intl.formatMessage(messages.apiError));
                             setAdding(false);
                         }
                     })
                     .catch(() => {
-                        window.alert('Wystąpił problem z adding_API.')
+                        window.alert(intl.formatMessage(messages.apiError))
                         setAdding(false);
                     });
                 }else{
-                    window.alert('Removing_API zwróciło błąd.');
+                    window.alert(intl.formatMessage(messages.apiError));
                     setAdding(false);
                 }
             })
             .catch(() => {
-                window.alert('Wystąpił problem z removing_API.');
+                window.alert(intl.formatMessage(messages.apiError));
                 setAdding(false);
             });
         }
@@ -197,15 +215,15 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             onClose={()=>setOpenModal(false)}
         >
             <Box sx={style}>
-                <TextField disabled={adding} value={websiteField} onChange={(e)=>setWebsiteField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='strona*'/>
-                <TextField disabled={adding} value={loginField} onChange={(e)=>setLoginField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='login*'/>
-                <TextField disabled={adding} value={passField} onChange={(e)=>setPassField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='hasło*'/>
-                <TextField disabled={adding} value={categoryField} onChange={(e)=>setCategoryField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder='kategoria'/>
+                <TextField disabled={adding} value={websiteField} onChange={(e)=>setWebsiteField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder={intl.formatMessage(messages.website)}/>
+                <TextField disabled={adding} value={loginField} onChange={(e)=>setLoginField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder={intl.formatMessage(messages.login)}/>
+                <TextField disabled={adding} value={passField} onChange={(e)=>setPassField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder={intl.formatMessage(messages.pass)}/>
+                <TextField disabled={adding} value={categoryField} onChange={(e)=>setCategoryField(e.target.value)} sx={{my:1}} fullWidth variant='filled' placeholder={intl.formatMessage(messages.category)}/>
                 <Box sx={{display:'flex'}}>
-                    <Button disabled={adding} onClick={update} variant='contained' sx={{marginLeft:'auto'}}>Zapisz</Button>
+                    <Button disabled={adding} onClick={update} variant='contained' sx={{marginLeft:'auto'}}>{intl.formatMessage(messages.save)}</Button>
                 </Box>
                 {adding &&
-                    <Typography sx={{textAlign:'center'}}>Aktualizuję...</Typography>
+                    <Typography sx={{textAlign:'center'}}>{intl.formatMessage(messages.updating)}</Typography>
                 }
             </Box>
         </Modal>
@@ -214,6 +232,8 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 }
 
 const Passes = ({data, pass}) => {
+    const intl = useIntl();
+
     const [query, setQuery] = useState('');
     const [edit,setEdit] = useState(false);
     const [err,setErr] = useState(false);
@@ -242,12 +262,12 @@ const Passes = ({data, pass}) => {
     return(
         <>
         <Paper sx={{p:1,ml:'auto',mr:'auto'}}>
-            <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:['280px','400px'], marginLeft:'auto',marginRight:'auto'}} variant='filled' placeholder='wyszukaj'/>
+            <TextField value={query} onChange={(e)=>setQuery(e.target.value)} sx={{minWidth:['280px','400px'], marginLeft:'auto',marginRight:'auto'}} variant='filled' placeholder={intl.formatMessage(messages.search)}/>
             <br></br>
             {window.localStorage.getItem('manage_api')!==null && (
             <Box sx={{m:1}}>
                 {!edit ? (
-                    <Button color='error' onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='contained'>Zarządzaj hasłami</Button>
+                    <Button color='error' onClick={()=>setEdit(true)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='contained'>{intl.formatMessage(messages.managePasses)}</Button>
                 ):(
                     <Button color='error' onClick={()=>setEdit(false)} sx={{maxWidth:'240px', marginLeft:'auto',marginRight:'auto',mt:1}} startIcon={<SettingsIcon/>} variant='outlined'>OK</Button>
                 )}

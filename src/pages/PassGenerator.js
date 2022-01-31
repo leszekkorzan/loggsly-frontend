@@ -1,11 +1,23 @@
 import React,{useState,useEffect} from 'react';
 import {Container, Typography, Paper, Slider, FormControlLabel, Checkbox, Box, TextField, Button} from '@mui/material';
+import { useIntl } from 'react-intl';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import copy from 'copy-to-clipboard';
 
 var generator = require('generate-password');
 
+const messages = {
+    generator: { id: 'app.passGenerator.generator' },
+    length: { id: 'app.passGenerator.length' },
+    digits: { id: 'app.passGenerator.digits' },
+    symbols: { id: 'app.passGenerator.symbols' },
+    lowerC: { id: 'app.passGenerator.lowerC' },
+    upperC: { id: 'app.passGenerator.upperC' },
+};
+
 const PassGenerator = ()=> {
+    const intl = useIntl();
+
     const [length,setLength] = useState(12);
     const [isNum,setIsNum] = useState(true);
     const [isSym,setIsSym] = useState(true);
@@ -40,7 +52,7 @@ const PassGenerator = ()=> {
     return(
         <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000'}}>
             <Typography sx={{my:3}} variant='h5'>
-                Generator Haseł
+                {intl.formatMessage(messages.generator)}
             </Typography>
             <Paper sx={{p:2,textAlign:'left'}}>
                 <Box sx={{display:'flex'}}>
@@ -50,14 +62,14 @@ const PassGenerator = ()=> {
                     </Button>
                 </Box>
                 <Box sx={{m:1,mt:3}}>
-                    <Typography>Długość hasła</Typography>
+                    <Typography>{intl.formatMessage(messages.length)}</Typography>
                     <Slider defaultValue={12} onChange={(e)=>setLength(e.target.value)} valueLabelDisplay='auto' min={5} max={50} marks={[{value:5,label:'5'},{value:50,label:'50'}]} />
                 </Box>
                 <Box>
-                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isNum} onClick={()=>setIsNum(!isNum)} />} label="cyfry" />
-                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isSym} onClick={()=>setIsSym(!isSym)} />} label="symbole" />
-                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isLowerCase} onClick={()=>setIsLowerCase(!isLowerCase)} />} label="małe litery" />
-                    <FormControlLabel control={<Checkbox checked={isUpperCase} onClick={()=>setIsUpperCase(!isUpperCase)} />} label="duże litery" />
+                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isNum} onClick={()=>setIsNum(!isNum)} />} label={intl.formatMessage(messages.digits)} />
+                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isSym} onClick={()=>setIsSym(!isSym)} />} label={intl.formatMessage(messages.symbols)} />
+                    <FormControlLabel sx={{mr:[2,5]}} control={<Checkbox checked={isLowerCase} onClick={()=>setIsLowerCase(!isLowerCase)} />} label={intl.formatMessage(messages.lowerC)} />
+                    <FormControlLabel control={<Checkbox checked={isUpperCase} onClick={()=>setIsUpperCase(!isUpperCase)} />} label={intl.formatMessage(messages.upperC)} />
                 </Box>
             </Paper>
         </Container>

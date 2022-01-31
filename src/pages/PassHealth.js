@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { Container, Avatar, Box, Typography, Button, Paper} from '@mui/material';
+import { useIntl } from 'react-intl';
 import aes from 'crypto-js/aes';
 import sha1 from 'crypto-js/sha1';
 import enc from 'crypto-js/enc-utf8';
@@ -7,7 +8,17 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ErrorIcon from '@mui/icons-material/Error';
+
+const messages = {
+    leaked: { id: 'app.healthElm.leaked' },
+    passHealth: { id: 'app.passHealth.passHealth' },
+    info: { id: 'app.passHealth.info' },
+    check: { id: 'app.passHealth.check' },
+};
+
 const HealthElm = ({index,website,login,pass}) => {
+    const intl = useIntl();
+
     const hash = sha1(pass).toString();
     const range = hash.slice(0,5);
     const suffix = hash.slice(5);
@@ -42,13 +53,15 @@ const HealthElm = ({index,website,login,pass}) => {
             </Box>
             <Box sx={{marginLeft:'auto',width:'70px',paddingLeft:'5px'}}>
                 <PasswordStrengthBar password={pass} />
-                {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>WYCIEK!</Typography>}
+                {leaked && <Typography sx={{fontSize:'14px', color:'#f44336', fontWeight:'bold', textAlign:'center'}}>{intl.formatMessage(messages.leaked)}</Typography>}
             </Box>
 
         </Paper>
     )
 }
 const PassHealth = () => {
+    const intl = useIntl();
+
     const [show,setShow] = useState(false);
     const decrypt = (text,key) =>{
         var bytes  = aes.decrypt(text, key);
@@ -57,11 +70,11 @@ const PassHealth = () => {
     }
     const data = JSON.parse(window.sessionStorage.getItem('csv_data'))    
     if(!data){
-        return <Typography sx={{color:'#000',textAlign:'center',mt:5}}>Brak danych! <a style={{color:'#90caf9'}} href='/'>załaduj ponownie aplikację</a></Typography>
+        window.location = '/';
     }
     return(
         <Container sx={{color:'#000',textAlign:'center', pt:5}}>
-            <Typography variant='h5'>Bezpieczeństwo Haseł</Typography>
+            <Typography variant='h5'>{intl.formatMessage(messages.passHealth)}</Typography>
             {show ? (
                 <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
                     {data.map((elm,index)=>
@@ -71,8 +84,8 @@ const PassHealth = () => {
                 </Container>
             ) : (
                 <Box >
-                    <Typography>Rozumiem, że fragmenty hashy zapisanych haseł zostaną przesłane do usługi haveibeenpwned.com.</Typography>
-                    <Button color='error' sx={{mt:1}} onClick={()=>setShow(true)} variant='contained'>Sprawdź</Button>
+                    <Typography>{intl.formatMessage(messages.info)}</Typography>
+                    <Button color='error' sx={{mt:1}} onClick={()=>setShow(true)} variant='contained'>{intl.formatMessage(messages.check)}</Button>
                 </Box>
             )}
 

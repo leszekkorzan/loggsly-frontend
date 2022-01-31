@@ -2,11 +2,22 @@ import React from 'react';
 import {Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useGlobalState} from '../components/state';
+import { useIntl } from 'react-intl';
+
+const messages = {
+    reset: { id: 'app.reset.reset' },
+    resetTitle: { id: 'app.reset.resetTitle' },
+    resetText: { id: 'app.reset.resetText' },
+    info: { id: 'app.reset.info' },
+    delete: { id: 'app.reset.delete' },
+    cloudsaveInfo: { id: 'app.reset.cloudsaveInfo' },
+};
 
 const Reset = ()=> {
+    const intl = useIntl();
     const [logged] = useGlobalState('logged')
     const resetFn = () => {
-        if(window.confirm('Czy na pewno chcesz zresetować ustawienia?')){
+        if(window.confirm(intl.formatMessage(messages.reset))){
             localStorage.clear();
             sessionStorage.clear();
             window.location = '/';
@@ -15,7 +26,7 @@ const Reset = ()=> {
     return(
         <Container maxWidth='sm' sx={{marginLeft:'auto',marginRight:'auto', textAlign:'center', color:'#000'}}>
             <Typography sx={{my:3}} variant='h5'>
-                Reset Ustawień
+                {intl.formatMessage(messages.resetTitle)}
             </Typography>
             <Accordion>
                 <AccordionSummary
@@ -23,12 +34,12 @@ const Reset = ()=> {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 >
-                <Typography>Reset</Typography>
+                <Typography>{intl.formatMessage(messages.resetText)}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography sx={{mb:1}}>Wszystkie ustawienia zostaną usunięte z tego urządzenia!</Typography>
-                    <Button color='error' disabled={logged} onClick={resetFn} variant='contained'>USUŃ</Button>
-                    {logged && <Typography sx={{m:1,color:'#f44336'}}>W trybie Cloud Save nie można wyzerować aplikacji lokalnie.</Typography>}
+                    <Typography sx={{mb:1}}>{intl.formatMessage(messages.info)}</Typography>
+                    <Button color='error' disabled={logged} onClick={resetFn} variant='contained'>{intl.formatMessage(messages.delete)}</Button>
+                    {logged && <Typography sx={{m:1,color:'#f44336'}}>{intl.formatMessage(messages.cloudsaveInfo)}</Typography>}
                 </AccordionDetails>
             </Accordion>
         </Container>
