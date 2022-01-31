@@ -4,6 +4,11 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { useIntl } from 'react-intl';
+
+import {setGlobalState, useGlobalState} from '../components/state';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -28,15 +33,33 @@ import {Link} from 'react-router-dom';
 
 import logo from '../assets/logo-white.svg';
 
+const messages = {
+    yourPasswords: { id: 'app.menu.yourPasswords' },
+    addPassword: { id: 'app.menu.addPassword' },
+    passwordsHealth: { id: 'app.menu.passwordsHealth' },
+    passwordGenerator: { id: 'app.menu.passwordGenerator' },
+    help: { id: 'app.menu.help' },
+    settings: { id: 'app.menu.settings' },
+    logout: { id: 'app.menu.logout' },
+};
+
 const Menu = () => {
+    const intl = useIntl();
     const [open, setOpen] = useState(false);
     const [logged, setLogged] = useState(false);
+
+    const [lang] = useGlobalState('lang');
+
     useEffect(()=>{
         setLogged(window.sessionStorage.getItem('pass')!==null)
     },[open])
     const logout = () => {
         window.sessionStorage.clear();
         window.location = '/';
+    }
+    const handleLang = (langID) => {
+        setGlobalState('lang', langID);
+        window.localStorage.setItem('lang', langID);
     }
     return(
         <>
@@ -58,6 +81,7 @@ const Menu = () => {
             anchor="right"
             open={open}
             onClose={()=>setOpen(false)}
+            sx={{minHeight:'100%'}}
         >
             <List sx={{minWidth:'200px'}}>
                 {logged &&
@@ -67,7 +91,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <VpnKeyIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Twoje hasła" />
+                        <ListItemText primary={intl.formatMessage(messages.yourPasswords)} />
                     </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -75,7 +99,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <AddCircleOutlineIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Dodaj hasło" />
+                        <ListItemText primary={intl.formatMessage(messages.addPassword)} />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -83,7 +107,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <SecurityIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Bezpieczeństwo haseł" />
+                        <ListItemText primary={intl.formatMessage(messages.passwordsHealth)} />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -91,7 +115,7 @@ const Menu = () => {
                         <ListItemIcon>
                             <EnhancedEncryptionIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Generator haseł" />
+                        <ListItemText primary={intl.formatMessage(messages.passwordGenerator)} />
                         </ListItemButton>
                     </ListItem>
                 </>
@@ -101,7 +125,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <HelpIcon/>
                     </ListItemIcon>
-                    <ListItemText primary="Pomoc" />
+                    <ListItemText primary={intl.formatMessage(messages.help)} />
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{my:2}}/>
@@ -118,7 +142,7 @@ const Menu = () => {
                     <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Ustawienia" />
+                    <ListItemText primary={intl.formatMessage(messages.settings)} />
                     </ListItemButton>
                 </ListItem>
                 {logged &&
@@ -127,11 +151,17 @@ const Menu = () => {
                         <ListItemIcon>
                             <LogoutIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Wyloguj" />
+                        <ListItemText primary={intl.formatMessage(messages.logout)} />
                         </ListItemButton>
                     </ListItem>
                 }
             </List>
+            <Box sx={{ml:'auto', mr:'auto', mt: 'auto', mb: 2}}>
+                <ButtonGroup>
+                    <Button onClick={()=> handleLang('pl')} variant={lang==='pl' ? 'contained' : 'outlined'}>PL</Button>
+                    <Button onClick={()=> handleLang('en')} variant={lang==='en' ? 'contained' : 'outlined'}>EN</Button>
+                </ButtonGroup>
+            </Box>
         </Drawer>
         </>
     )

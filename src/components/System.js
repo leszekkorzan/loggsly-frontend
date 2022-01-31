@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Box, TextField, Button, InputAdornment, Paper, InputLabel, MenuItem, FormControl, Select, Typography, CircularProgress} from '@mui/material';
+import { useIntl } from 'react-intl';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
@@ -22,12 +23,20 @@ const firebaseConfig = {
     measurementId: "G-2N8TZQQ8HW",
     databaseURL: 'https://loggsly-com-default-rtdb.europe-west1.firebasedatabase.app'
 };
-
+const messages = {
+    noDbAccess: { id: 'app.system.noDbAccess' },
+    fetchErr: { id: 'app.system.fetchErr' },
+    chooseProfile: { id: 'app.system.chooseProfile' },
+    enterMainPass: { id: 'app.system.enterMainPass' },
+    noProfiles: { id: 'app.system.noProfiles' },
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getDatabase(app);
 
 const System = () => {
+    const intl = useIntl();
+
     const [pass, setPass] = useState('');
     const [err, setErr] = useState(false);
     const [logged,setLogged] = useState(false);
@@ -55,10 +64,10 @@ const System = () => {
                 }).catch((e) => {
                     setDbLoading(false)
                     if(e.message === 'Permission denied'){
-                        window.alert("Brak dostępu do bazy danych! Sprawdź status swojej subskrypcji.")
+                        window.alert(intl.formatMessage(messages.noDbAccess))
                         window.location='/cloudsave'
                     }else{
-                        window.alert("Wystąpił błąd podczas pobierania danych.")
+                        window.alert(intl.formatMessage(messages.fetchErr))
                     }
                     console.log(e.message)
                 });
@@ -119,12 +128,12 @@ const System = () => {
                 )}
                 {cloud && parsedDataDb && (
                     <FormControl sx={{textAlign:'left'}} fullWidth>
-                        <InputLabel id="profile-select-label">wybierz profil</InputLabel>
+                        <InputLabel id="profile-select-label">{intl.formatMessage(messages.chooseProfile)}</InputLabel>
                         <Select
                             labelId="profile-select-label"
                             id="profile-select"
                             value={select}
-                            label="wybierz profil"
+                            label={intl.formatMessage(messages.chooseProfile)}
                             onChange={(e)=>setSelect(e.target.value)}
                         >
                         {parsedDataDb.map((i,index)=>
@@ -135,10 +144,10 @@ const System = () => {
                 )}
                 {!cloud || parsedDataDb ? (
                     <form onSubmit={e => login() & e.preventDefault()} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                        <TextField sx={{minWidth:'320px',mt:2}} fullWidth autoFocus error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' label="podaj hasło główne" variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),endAdornment: (<InputAdornment position="end"><Button onClick={login} variant='outlined'><ArrowForwardTwoToneIcon /></Button></InputAdornment>)}}/>
+                        <TextField sx={{minWidth:'320px',mt:2}} fullWidth autoFocus error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' label={intl.formatMessage(messages.enterMainPass)} variant="outlined" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),endAdornment: (<InputAdornment position="end"><Button onClick={login} variant='outlined'><ArrowForwardTwoToneIcon /></Button></InputAdornment>)}}/>
                     </form>
                 ) : (
-                    <Typography>Brak profilów</Typography>
+                    <Typography>{intl.formatMessage(messages.noProfiles)}</Typography>
                 )}
 
             </Paper>

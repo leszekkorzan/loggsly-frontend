@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { Container, Typography, TextField, Button, Paper, CircularProgress, Divider, Box, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { useIntl } from 'react-intl';
 
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
@@ -15,6 +16,41 @@ import PaymentIcon from '@mui/icons-material/Payment';
 
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
+
+const messages = {
+    savedAndDisabled: { id: 'app.cloudsave.profileElm.savedAndDisabled' },
+    savedAndEnabled: { id: 'app.cloudsave.profileElm.savedAndEnabled' },
+    updateError: { id: 'app.cloudsave.profileElm.updateError' },
+    delete: { id: 'app.cloudsave.profileElm.delete' },
+    deleted: { id: 'app.cloudsave.profileElm.deleted' },
+    deleteError: { id: 'app.cloudsave.profileElm.deleteError' },
+    mainPass: { id: 'app.cloudsave.profileElm.mainPass' },
+    edit: { id: 'app.cloudsave.profileElm.edit' },
+    apiUrl: { id: 'app.cloudsave.profileElm.apiUrl' },
+    save: { id: 'app.cloudsave.profileElm.save' },
+    updating: { id: 'app.cloudsave.profileElm.updating' },
+    removeText: { id: 'app.cloudsave.profileElm.removeText' },
+
+    profileAdded: { id: 'app.cloudsave.profileAdded' },
+    profileAddError: { id: 'app.cloudsave.profileAddError' },
+    entryDataError: { id: 'app.cloudsave.entryDataError' },
+    signInWithGoogle: { id: 'app.cloudsave.signInWithGoogle' },
+    info: { id: 'app.cloudsave.info' },
+    hello: { id: 'app.cloudsave.hello' },
+    signOut: { id: 'app.cloudsave.signOut' },
+    refresh: { id: 'app.cloudsave.refresh' },
+    manageSubscription: { id: 'app.cloudsave.manageSubscription' },
+    manageProfiles: { id: 'app.cloudsave.manageProfiles' },
+    addProfile: { id: 'app.cloudsave.addProfile' },
+    profileName: { id: 'app.cloudsave.profileName' },
+    csvApiUrl: { id: 'app.cloudsave.csvApiUrl' },
+    masterPass: { id: 'app.cloudsave.masterPass' },
+    repeatMasterPass: { id: 'app.cloudsave.repeatMasterPass' },
+    add: { id: 'app.cloudsave.add' },
+    adding: { id: 'app.cloudsave.adding' },
+    noProfiles: { id: 'app.cloudsave.noProfiles' },
+    subscriptionType: { id: 'app.cloudsave.subscriptionType' },
+};
 
 const firebaseConfig = {
     apiKey: "AIzaSyBZl4fO64qGFaYdWZx8trV5Vy1agxfjgRM",
@@ -33,6 +69,8 @@ const auth = getAuth();
 const db = getDatabase(app);
 
 const ProfileElm = ({i,index,dataDb, userUID}) => {
+    const intl = useIntl();
+
     const [pass, setPass] = useState('');
     const [err, setErr] = useState(false);
     const [logged,setLogged] = useState(false);
@@ -71,10 +109,10 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             update(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`), {
                 api: null
             }).then(()=>{
-                window.alert('Zapisano i wyłączono!')
+                window.alert(intl.formatMessage(messages.savedAndDisabled))
                 setUpdating(false);
             }).catch(()=>{
-                window.alert("Błąd aktualizacji!")
+                window.alert(intl.formatMessage(messages.updateError))
                 setUpdating(false);
             });
         }else{
@@ -83,22 +121,22 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             update(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`), {
                 api: text
             }).then(()=>{
-                window.alert('Zapisano i włączono!')
+                window.alert(intl.formatMessage(messages.savedAndEnabled))
                 setUpdating(false);
             }).catch(()=>{
-                window.alert("Błąd aktualizacji!")
+                window.alert(intl.formatMessage(messages.updateError))
                 setUpdating(false);
             });
         }
     }
     const removeProfile = () => {
-        if(window.confirm('Czy na pewno usunąć ten profil?')){
+        if(window.confirm(intl.formatMessage(messages.delete))){
             window.sessionStorage.clear();
             remove(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`)
             ).then(()=>{
-                window.alert('Usunięto!')
+                window.alert(intl.formatMessage(messages.deleted))
             }).catch(()=>{
-                window.alert("Błąd usuwania!")
+                window.alert(intl.formatMessage(messages.deleteError))
             });
         }
     }
@@ -112,23 +150,25 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             <Divider sx={{m:1}}/>
             {!logged ? (
                 <Box sx={{display:'flex'}}>
-                    <TextField error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' fullWidth label='hasło główne tego profilu'/>
-                    <Button onClick={login} sx={{ml:1}} variant='contained'>Edytuj</Button>
+                    <TextField error={err} value={pass} onChange={(e)=>setPass(e.target.value)} type='password' fullWidth label={intl.formatMessage(messages.mainPass)}/>
+                    <Button onClick={login} sx={{ml:1}} variant='contained'>{intl.formatMessage(messages.edit)}</Button>
                 </Box> 
             ) : (
                 <Box>
-                    <TextField variant='filled' disabled={updating} value={apiURL} onChange={(e)=>setApiURL(e.target.value)} fullWidth label='wpisz appscript API endpoint'/>
-                    <Button onClick={editAPI} disabled={updating} size='large' sx={{my:2,ml:'auto',textAlign:'right'}} variant='contained'>Zapisz</Button>
-                    {updating && <Typography sx={{fontSize:'14px'}}>Aktualizuję...</Typography>}
+                    <TextField variant='filled' disabled={updating} value={apiURL} onChange={(e)=>setApiURL(e.target.value)} fullWidth label={intl.formatMessage(messages.apiUrl)}/>
+                    <Button onClick={editAPI} disabled={updating} size='large' sx={{my:2,ml:'auto',textAlign:'right'}} variant='contained'>{intl.formatMessage(messages.save)}</Button>
+                    {updating && <Typography sx={{fontSize:'14px'}}>{intl.formatMessage(messages.updating)}</Typography>}
                 </Box>
             )}
             <Divider sx={{m:1,my:2}}/>
-            <Button onClick={removeProfile} startIcon={<DeleteIcon/>} variant='outlined'>Usuń</Button>
+            <Button onClick={removeProfile} startIcon={<DeleteIcon/>} variant='outlined'>{intl.formatMessage(messages.removeText)}</Button>
         </Paper>
     )
 }
 
 const CloudSave = () => {
+    const intl = useIntl();
+
     const params = new URLSearchParams(window.location.search)
     const success = params.get('success')
 
@@ -235,18 +275,18 @@ const CloudSave = () => {
 
             push(ref(db, 'users/' + data.uid + '/data'), refData).then(()=>{
                 setAddingLoading(false);
-                window.alert('Profil dodano pomyślnie!')
+                window.alert(intl.formatMessage(messages.profileAdded))
                 setAddingName('');
                 setAddingCSV('');
                 setAddingPass('');
                 setAddingPass2('');
             }).catch(()=>{
                 setAddingLoading(false);
-                setAddingErr('błąd podczas dodawania');
+                setAddingErr(intl.formatMessage(messages.profileAddError));
             });
             
         }else{
-            setAddingErr('Dane wejściowe są nieprawidłowe.');
+            setAddingErr(intl.formatMessage(messages.entryDataError));
         }
     }
 
@@ -258,10 +298,10 @@ const CloudSave = () => {
             {!data && !loading && (
                 <Paper sx={{p:2}}>
                     <Typography variant='h5'>Loggsly Cloud Save</Typography>
-                    <Button color='error' onClick={login} variant='contained' sx={{my:2}}>Zaloguj się z Google</Button>
+                    <Button color='error' onClick={login} variant='contained' sx={{my:2}}>{intl.formatMessage(messages.signInWithGoogle)}</Button>
                     <Typography sx={{fontSize:'14px', color:'#f44336'}}>{err}</Typography>
                     <Divider/>
-                    <Typography sx={{mt:1,fontSize:'14px'}}>Uwaga! Po zalogowaniu profil zapisany lokalnie zostanie usunięty z tego urządzenia.</Typography>
+                    <Typography sx={{mt:1,fontSize:'14px'}}>{intl.formatMessage(messages.info)}</Typography>
                 </Paper>
             )}
             {loading && (
@@ -269,14 +309,14 @@ const CloudSave = () => {
             )}
             {data && !loading && (
                 <div>
-                    <Typography variant='h5'>Witaj {data.email}!</Typography>
+                    <Typography variant='h5'>{intl.formatMessage(messages.hello)} {data.email}!</Typography>
                     <Box>
-                        <Button startIcon={<LogoutIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={logout}>Wyloguj z konta</Button>
-                        <Button startIcon={<RefreshIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>Odśwież Dane</Button>
+                        <Button startIcon={<LogoutIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={logout}>{intl.formatMessage(messages.signOut)}</Button>
+                        <Button startIcon={<RefreshIcon/>} color='error' sx={{m:0.5,width:['90%','auto']}} variant='outlined' onClick={()=>window.location='/cloudsave?success=true'}>{intl.formatMessage(messages.refresh)}</Button>
                         {activated &&
                             <form action={`${url}/manage`} method="POST">
                                 <input type='hidden' name="token" value={token} />
-                                <Button startIcon={<PaymentIcon/>} sx={{m:0.5,width:['90%','auto']}} color='error' variant='outlined' type='submit'>Zarządzaj subskrypcją</Button>
+                                <Button startIcon={<PaymentIcon/>} sx={{m:0.5,width:['90%','auto']}} color='error' variant='outlined' type='submit'>{intl.formatMessage(messages.manageSubscription)}</Button>
                             </form>
                         } 
                     </Box>
@@ -286,7 +326,7 @@ const CloudSave = () => {
                             <Container>
                                 <Divider sx={{my:2}}/>
                                 {!edit ? (
-                                    <Button color='error' onClick={getData} disabled={dataLoading} variant='contained'>Zarządzaj profilami</Button>
+                                    <Button color='error' onClick={getData} disabled={dataLoading} variant='contained'>{intl.formatMessage(messages.manageProfiles)}</Button>
                                 ) : (
                                     <Box>
                                         <Accordion sx={{mb:2}}>
@@ -295,24 +335,24 @@ const CloudSave = () => {
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
                                             >
-                                            <Typography>Dodaj profil</Typography>
+                                            <Typography>{intl.formatMessage(messages.addProfile)}</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'center',flexDirection:['column','row']}}>
-                                                    <TextField value={addingName} onChange={(e)=>setAddingName(e.target.value)} disabled={addingLoading} label='Nazwa profilu' sx={{m:1}}/>
-                                                    <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label='Link CSV lub API' sx={{m:1}}/>
-                                                    <TextField value={addingPass} onChange={(e)=>setAddingPass(e.target.value)} disabled={addingLoading} type='password' label='hasło główne profilu' sx={{m:1}}/>
-                                                    <TextField value={addingPass2} onChange={(e)=>setAddingPass2(e.target.value)} disabled={addingLoading} type='password' label='powtórz hasło główne' sx={{m:1}}/>
+                                                    <TextField value={addingName} onChange={(e)=>setAddingName(e.target.value)} disabled={addingLoading} label={intl.formatMessage(messages.profileName)} sx={{m:1}}/>
+                                                    <TextField value={addingCSV} onChange={(e)=>setAddingCSV(e.target.value)} disabled={addingLoading} label={intl.formatMessage(messages.csvApiUrl)} sx={{m:1}}/>
+                                                    <TextField value={addingPass} onChange={(e)=>setAddingPass(e.target.value)} disabled={addingLoading} type='password' label={intl.formatMessage(messages.masterPass)} sx={{m:1}}/>
+                                                    <TextField value={addingPass2} onChange={(e)=>setAddingPass2(e.target.value)} disabled={addingLoading} type='password' label={intl.formatMessage(messages.repeatMasterPass)} sx={{m:1}}/>
 
-                                                    <Button onClick={addProfile} disabled={addingLoading} sx={{my:1}} variant='contained'>Dodaj</Button>
+                                                    <Button onClick={addProfile} disabled={addingLoading} sx={{my:1}} variant='contained'>{intl.formatMessage(messages.add)}</Button>
                                                 </Box>
                                                 <br></br>
                                                 <Typography sx={{fontSize:'14px', color:'#f44336'}}>{addingErr}</Typography>
-                                                <Typography sx={{fontSize:'15px'}}>{addingLoading && 'Dodawanie...'}</Typography>
+                                                <Typography sx={{fontSize:'15px'}}>{addingLoading && intl.formatMessage(messages.adding)}</Typography>
                                             </AccordionDetails>
                                         </Accordion>
                                         {!dataDb ? (
-                                            <Typography sx={{my:1}}>Brak profilów</Typography>
+                                            <Typography sx={{my:1}}>{intl.formatMessage(messages.noProfiles)}</Typography>
                                         ) : (
                                             <Box>
                                                 {parsedDataDb !== null &&
@@ -329,7 +369,7 @@ const CloudSave = () => {
                             </Container>
                         ) : (
                             <Paper sx={{mt:3,p:2}}>
-                                <Typography variant='h5'>Wybierz rodzaj subskrypcji</Typography>
+                                <Typography variant='h5'>{intl.formatMessage(messages.subscriptionType)}</Typography>
                                 <Box sx={{display:'flex',flexWrap:'wrap',justifyContent:'center'}}>
                                     <Box sx={{m:2}}>
                                         <form action={`${url}/checkout`} method="POST">

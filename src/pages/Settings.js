@@ -1,10 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Typography, TextField, Button, Divider, Link, Paper } from '@mui/material';
+import { Container, Typography, TextField, Button, Divider, Paper } from '@mui/material';
+import { useIntl } from 'react-intl';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 import {useGlobalState} from '../components/state';
 
+const messages = {
+    disabled: { id: 'app.settings.disabled' },
+    enabled: { id: 'app.settings.enabled' },
+    reset: { id: 'app.settings.reset' },
+    info: { id: 'app.settings.info' },
+    apiUrl: { id: 'app.settings.apiUrl' },
+    save: { id: 'app.settings.save' },
+    cloudsaveInfo: { id: 'app.settings.cloudsaveInfo' },
+    panel: { id: 'app.settings.panel' },
+};
+
 const Settings = () => {
+    const intl = useIntl();
+
     const [logged] = useGlobalState('logged')
 
     const pass = window.atob(window.sessionStorage.getItem('pass'));
@@ -24,11 +38,11 @@ const Settings = () => {
     const encrypt = () => {
         if(apiInpt === ""){
             window.localStorage.removeItem('manage_api');
-            window.alert('Wyłączono!')
+            window.alert(intl.formatMessage(messages.disabled))
         }else{
             const text = aes.encrypt(apiInpt, pass).toString();
             window.localStorage.setItem('manage_api', text);
-            window.alert('Włączono!')
+            window.alert(intl.formatMessage(messages.enabled))
         }
     }
 
@@ -36,27 +50,26 @@ const Settings = () => {
         <Container sx={{mt:5,color:'#000',textAlign:'center'}}>
             {!logged ? (
                 <>
-                    <Button color='error' href='/reset' sx={{mb:2}} variant='outlined'>Reset ustawień</Button>
+                    <Button color='error' href='/reset' sx={{mb:2}} variant='outlined'>{intl.formatMessage(messages.reset)}</Button>
                     <br></br>
                     {window.sessionStorage.getItem('pass')!==null &&
                     <>
                         <Divider/>
                         <br></br>
-                        <Typography variant='h5'>Konfiguracja zarządzania hasłami z aplikacji</Typography>
-                        <Link href='#'>Instrukcja tutaj</Link>
+                        <Typography variant='h5'>{intl.formatMessage(messages.info)}</Typography>
                         <br></br>
                         <Paper sx={{p:1,mt:2,maxWidth:'400px',ml:'auto',mr:'auto'}}>
-                            <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label="wpisz appscript API endpoint" variant="outlined" />
+                            <TextField sx={{minWidth:'320px', mt:3}} value={apiInpt} onChange={(e)=>setApiInpt(e.target.value)} label={intl.formatMessage(messages.apiUrl)} variant="outlined" />
                             <br></br>
-                            <Button color='error' onClick={encrypt} sx={{m:1}} variant='contained'>Zapisz</Button>
+                            <Button color='error' onClick={encrypt} sx={{m:1}} variant='contained'>{intl.formatMessage(messages.save)}</Button>
                         </Paper>
                     </>
                     }
                 </>
             ) : (
                 <>
-                <Typography sx={{m:1,color:'#000'}}>W trybie Cloud Save ustawienia lokalne są niedostępne.</Typography>
-                <Button color='error' href='/cloudsave' variant='contained'>Panel Cloud Save</Button>
+                <Typography sx={{m:1,color:'#000'}}>{intl.formatMessage(messages.cloudsaveInfo)}</Typography>
+                <Button color='error' href='/cloudsave' variant='contained'>{intl.formatMessage(messages.panel)}</Button>
                 </>
             )}
 
