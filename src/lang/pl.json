@@ -99,5 +99,23 @@
     "app.cloudsave.add": "Dodaj",
     "app.cloudsave.adding": "Dodawanie...",
     "app.cloudsave.noProfiles": "Brak profilów",
-    "app.cloudsave.subscriptionType": "Wybierz rodzaj subskrypcji"
+    "app.cloudsave.subscriptionType": "Wybierz rodzaj subskrypcji",
+
+    "app.addPass.apiError": "Błąd API",
+    "app.addPass.entryDataError": "Dane wejściowe są nieprawidłowe.",
+    "app.addPass.addPassFromApp": "Dodaj nowe hasło z aplikacji",
+    "app.addPass.website": "strona*",
+    "app.addPass.login": "login*",
+    "app.addPass.pass": "hasło*",
+    "app.addPass.category": "kategoria",
+    "app.addPass.add": "Dodaj",
+    "app.addPass.adding": "Dodawanie...",
+    "app.addPass.success": "Sukces",
+    "app.addPass.successInfo": "Hasło zostało dodane! Zmiany będą widoczne w ciągu kilku minut.",
+    "app.addPass.setupFirst": "Najpierw należy skonfigurować możliwość dodawania haseł z aplikacji.",
+    "app.addPass.setup": "Konfiguracja",
+    "app.addPass.addPassManually": "Dodaj nowe hasło manualnie",
+    "app.addPass.encrypt": "Zaszyfruj",
+    "app.addPass.copyInfo": "Wklej powyższy hash do Twojego arkusza Google Sheet.",
+    "app.addPass.copy": "Skopiuj"
 }
