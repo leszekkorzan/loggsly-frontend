@@ -28,53 +28,56 @@ const Connect = () => {
     var URL = URLbytes.toString(enc);
 
     useEffect(() => {
-        if(URL.toLowerCase().startsWith('https://script.google.com/')){
-            window.fetch(URL,{
-                redirect:'follow',
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'text/plain;charset=utf-8'
-                },
-                body: JSON.stringify({type:'view'})
-            }).then(res => res.json())
-            .then(results => {
-                setLoading(false)
-                setData(results)
-                window.sessionStorage.setItem('csv_data',JSON.stringify(results))
-                window.sessionStorage.setItem('API_fetch',true);
-            })
-            .catch(() => {
-                setLoading(false)
-                setErr(true)
-            });
-        }else{
-            setTimeout(()=>{
-                Papa.parse(`${URL}&_=${updated}`, {
-                    download: true,
-                    header: true,
-                    error: function() {
-                        setLoading(false)
-                        setErr(true)
+        const fetchData = () => {
+            if(URL.toLowerCase().startsWith('https://script.google.com/')){
+                window.fetch(URL,{
+                    redirect:'follow',
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'text/plain;charset=utf-8'
                     },
-                    complete: function(results) {
-                        setLoading(false)
-                        if(results){
-                            var data = results.data
-                            if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
-                                setErr(false)
-                                setData(data)
-                                window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                    body: JSON.stringify({type:'view'})
+                }).then(res => res.json())
+                .then(results => {
+                    setLoading(false)
+                    setData(results)
+                    window.sessionStorage.setItem('csv_data',JSON.stringify(results))
+                    window.sessionStorage.setItem('API_fetch',true);
+                })
+                .catch(() => {
+                    setLoading(false)
+                    setErr(true)
+                });
+            }else{
+                setTimeout(()=>{
+                    Papa.parse(`${URL}&_=${updated}`, {
+                        download: true,
+                        header: true,
+                        error: function() {
+                            setLoading(false)
+                            setErr(true)
+                        },
+                        complete: function(results) {
+                            setLoading(false)
+                            if(results){
+                                var data = results.data
+                                if(['website','login','password','category'].every(elm => results.meta.fields.includes(elm))){
+                                    setErr(false)
+                                    setData(data)
+                                    window.sessionStorage.setItem('csv_data',JSON.stringify(data))
+                                }else{
+                                    setErr(true)
+                                }
                             }else{
                                 setErr(true)
                             }
-                        }else{
-                            setErr(true)
                         }
-                    }
-                })  
-            },1300)
+                    })  
+                },1300)
+            } 
         }
-     }, []);
+        fetchData();
+    }, []);
     return(
         <>
             {loading && (

@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { SnackbarProvider } from 'notistack';
 import localeEn from './lang/en.json';
 import localePl from './lang/pl.json';
 import Dashboard from './pages/Dashboard';
@@ -50,16 +51,18 @@ const App = ()=> {
     <Router>
       <ThemeProvider theme={darkTheme}>
         <IntlProvider messages={messages[lang]} locale={lang} defaultLocale='pl'>
-          <Menu/>
-          <Routes>
-            <Route path="/reset" element={<Reset/>} />
-            <Route path="/settings" element={<Settings/>} />
-            <Route path="/passwords-health" element={<PassHealth/>} />
-            <Route path="/add-password" element={<AddPass/>} />
-            <Route path="/password-generator" element={<PassGenerator/>} />
-            <Route path="/cloudsave" element={<CloudSave/>} />
-            <Route path="/" element={<Dashboard/>} />
-          </Routes>
+          <SnackbarProvider>
+            <Menu/>
+            <Routes>
+              <Route path="/reset" element={<Reset/>} />
+              <Route path="/settings" element={<Settings/>} />
+              <Route path="/passwords-health" element={<PassHealth/>} />
+              <Route path="/add-password" element={<AddPass/>} />
+              <Route path="/password-generator" element={<PassGenerator/>} />
+              <Route path="/cloudsave" element={<CloudSave/>} />
+              <Route path="/" element={<Dashboard/>} />
+            </Routes>
+          </SnackbarProvider>
         </IntlProvider>
       </ThemeProvider>
     </Router>

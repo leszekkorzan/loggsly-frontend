@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useIntl } from 'react-intl';
+import { useSnackbar } from 'notistack';
 
 import {setGlobalState, useGlobalState} from '../components/state';
 
@@ -41,10 +42,13 @@ const messages = {
     help: { id: 'app.menu.help' },
     settings: { id: 'app.menu.settings' },
     logout: { id: 'app.menu.logout' },
+    signedOut: { id: 'app.menu.signedOut' },
 };
 
 const Menu = () => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
+
     const [open, setOpen] = useState(false);
     const [logged, setLogged] = useState(false);
 
@@ -55,6 +59,9 @@ const Menu = () => {
     },[open])
     const logout = () => {
         window.sessionStorage.clear();
+        enqueueSnackbar(intl.formatMessage(messages.signedOut), { 
+            variant: 'success',
+        }) 
         window.location = '/';
     }
     const handleLang = (langID) => {

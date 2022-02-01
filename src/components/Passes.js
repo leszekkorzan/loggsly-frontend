@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Avatar, Box, Typography, IconButton, Popover, Tooltip, TextField, Button, Modal, Paper} from '@mui/material';
 import { useIntl } from 'react-intl';
+import { useSnackbar } from 'notistack';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -47,6 +48,8 @@ const style = {
 
 const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [openModal, setOpenModal] = useState(false);
 
@@ -91,16 +94,22 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
             }).then(res => res.json())
             .then(res => {
                 if(res.success){
-                    window.alert(intl.formatMessage(messages.deletedChangesSoon));
+                    enqueueSnackbar(intl.formatMessage(messages.deletedChangesSoon), { 
+                        variant: 'success',
+                    })
                     sessionStorage.setItem('updated',new Date().toISOString());
                     window.location.reload(true)
                 }else{
-                    window.alert(intl.formatMessage(messages.apiError));
+                    enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                        variant: 'error',
+                    })
                     window.location = '/';
                 }
             })
             .catch(() => {
-                window.alert(intl.formatMessage(messages.apiError));
+                enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                    variant: 'error',
+                })
                 window.location = '/';
             });
         }
@@ -130,25 +139,35 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                     }).then(res => res.json())
                     .then(res => {
                         if(res.success){
-                            window.alert(intl.formatMessage(messages.updatedChangesSoon));
+                            enqueueSnackbar(intl.formatMessage(messages.updatedChangesSoon), { 
+                                variant: 'success',
+                            });
                             sessionStorage.setItem('updated',new Date().toISOString());
                             window.location.reload(true);
                         }else{
-                            window.alert(intl.formatMessage(messages.apiError));
+                            enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                                variant: 'error',
+                            })
                             setAdding(false);
                         }
                     })
                     .catch(() => {
-                        window.alert(intl.formatMessage(messages.apiError))
+                        enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                            variant: 'error',
+                        });
                         setAdding(false);
                     });
                 }else{
-                    window.alert(intl.formatMessage(messages.apiError));
+                    enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                        variant: 'error',
+                    });
                     setAdding(false);
                 }
             })
             .catch(() => {
-                window.alert(intl.formatMessage(messages.apiError));
+                enqueueSnackbar(intl.formatMessage(messages.apiError), { 
+                    variant: 'error',
+                })
                 setAdding(false);
             });
         }

@@ -6,6 +6,7 @@
     "app.menu.help": "Help",
     "app.menu.settings": "Settings",
     "app.menu.logout": "Logout",
+    "app.menu.signedOut": "Logged out of profile.",
 
     "app.setup.start": "Let's start!",
     "app.setup.readBefore": "Read before you begin",
@@ -22,6 +23,7 @@
     "app.system.chooseProfile": "select a profile",
     "app.system.enterMainPass": "enter master password",
     "app.system.noProfiles": "No profiles",
+    "app.system.loginError": "Profile login error!",
 
     "app.connect.error": "Error",
     "app.connect.dbError": "There is a problem with the database!",

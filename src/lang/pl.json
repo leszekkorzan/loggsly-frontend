@@ -6,6 +6,7 @@
     "app.menu.help": "Pomoc",
     "app.menu.settings": "Ustawienia",
     "app.menu.logout": "Wyloguj",
+    "app.menu.signedOut": "Wylogowano z profilu.",
 
     "app.setup.start": "Zaczynamy!",
     "app.setup.readBefore": "Przeczytaj zanim rozpoczniesz",
@@ -22,6 +23,7 @@
     "app.system.chooseProfile": "wybierz profil",
     "app.system.enterMainPass": "podaj hasło główne",
     "app.system.noProfiles": "Brak profilów",
+    "app.system.loginError": "Błąd logowania do profilu!",
 
     "app.connect.error": "Błąd",
     "app.connect.dbError": "Wystąpił problem z bazą danych!",
