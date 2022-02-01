@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Container, Typography, TextField, Button, Paper, CircularProgress, Divider, Box, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { useIntl } from 'react-intl';
+import { useSnackbar } from 'notistack';
 
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
@@ -70,6 +71,7 @@ const db = getDatabase(app);
 
 const ProfileElm = ({i,index,dataDb, userUID}) => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [pass, setPass] = useState('');
     const [err, setErr] = useState(false);
@@ -109,10 +111,14 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             update(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`), {
                 api: null
             }).then(()=>{
-                window.alert(intl.formatMessage(messages.savedAndDisabled))
+                enqueueSnackbar(intl.formatMessage(messages.savedAndDisabled), { 
+                    variant: 'success',
+                });
                 setUpdating(false);
             }).catch(()=>{
-                window.alert(intl.formatMessage(messages.updateError))
+                enqueueSnackbar(intl.formatMessage(messages.updateError), { 
+                    variant: 'error',
+                });
                 setUpdating(false);
             });
         }else{
@@ -121,10 +127,14 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             update(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`), {
                 api: text
             }).then(()=>{
-                window.alert(intl.formatMessage(messages.savedAndEnabled))
+                enqueueSnackbar(intl.formatMessage(messages.savedAndEnabled), { 
+                    variant: 'success',
+                });
                 setUpdating(false);
             }).catch(()=>{
-                window.alert(intl.formatMessage(messages.updateError))
+                enqueueSnackbar(intl.formatMessage(messages.updateError), { 
+                    variant: 'error',
+                });
                 setUpdating(false);
             });
         }
@@ -134,9 +144,13 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
             window.sessionStorage.clear();
             remove(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`)
             ).then(()=>{
-                window.alert(intl.formatMessage(messages.deleted))
+                enqueueSnackbar(intl.formatMessage(messages.deleted), { 
+                    variant: 'success',
+                });
             }).catch(()=>{
-                window.alert(intl.formatMessage(messages.deleteError))
+                enqueueSnackbar(intl.formatMessage(messages.deleteError), { 
+                    variant: 'error',
+                });
             });
         }
     }
@@ -168,6 +182,7 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
 
 const CloudSave = () => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
 
     const params = new URLSearchParams(window.location.search)
     const success = params.get('success')
@@ -275,7 +290,9 @@ const CloudSave = () => {
 
             push(ref(db, 'users/' + data.uid + '/data'), refData).then(()=>{
                 setAddingLoading(false);
-                window.alert(intl.formatMessage(messages.profileAdded))
+                enqueueSnackbar(intl.formatMessage(messages.profileAdded), { 
+                    variant: 'success',
+                });
                 setAddingName('');
                 setAddingCSV('');
                 setAddingPass('');
@@ -283,10 +300,16 @@ const CloudSave = () => {
             }).catch(()=>{
                 setAddingLoading(false);
                 setAddingErr(intl.formatMessage(messages.profileAddError));
+                enqueueSnackbar(intl.formatMessage(messages.profileAddError), { 
+                    variant: 'error',
+                });
             });
             
         }else{
             setAddingErr(intl.formatMessage(messages.entryDataError));
+            enqueueSnackbar(intl.formatMessage(messages.entryDataError), { 
+                variant: 'error',
+            });
         }
     }
 

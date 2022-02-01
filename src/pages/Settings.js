@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import aes from 'crypto-js/aes';
 import enc from 'crypto-js/enc-utf8'
 import {useGlobalState} from '../components/state';
+import { useSnackbar } from 'notistack';
 
 const messages = {
     disabled: { id: 'app.settings.disabled' },
@@ -18,6 +19,7 @@ const messages = {
 
 const Settings = () => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [logged] = useGlobalState('logged')
 
@@ -38,11 +40,15 @@ const Settings = () => {
     const encrypt = () => {
         if(apiInpt === ""){
             window.localStorage.removeItem('manage_api');
-            window.alert(intl.formatMessage(messages.disabled))
+            enqueueSnackbar(intl.formatMessage(messages.disabled), { 
+                variant: 'success',
+            })
         }else{
             const text = aes.encrypt(apiInpt, pass).toString();
             window.localStorage.setItem('manage_api', text);
-            window.alert(intl.formatMessage(messages.enabled))
+            enqueueSnackbar(intl.formatMessage(messages.enabled), { 
+                variant: 'success',
+            })        
         }
     }
 

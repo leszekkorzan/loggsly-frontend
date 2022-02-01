@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Box, TextField, Button, InputAdornment, Paper, InputLabel, MenuItem, FormControl, Select, Typography, CircularProgress} from '@mui/material';
 import { useIntl } from 'react-intl';
+import { useSnackbar } from 'notistack';
 
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
@@ -29,6 +30,7 @@ const messages = {
     chooseProfile: { id: 'app.system.chooseProfile' },
     enterMainPass: { id: 'app.system.enterMainPass' },
     noProfiles: { id: 'app.system.noProfiles' },
+    loginError: { id: 'app.system.loginError' }
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -36,6 +38,7 @@ const db = getDatabase(app);
 
 const System = () => {
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [pass, setPass] = useState('');
     const [err, setErr] = useState(false);
@@ -64,10 +67,14 @@ const System = () => {
                 }).catch((e) => {
                     setDbLoading(false)
                     if(e.message === 'Permission denied'){
-                        window.alert(intl.formatMessage(messages.noDbAccess))
+                        enqueueSnackbar(intl.formatMessage(messages.noDbAccess), { 
+                            variant: 'error',
+                        })
                         window.location='/cloudsave'
                     }else{
-                        window.alert(intl.formatMessage(messages.fetchErr))
+                        enqueueSnackbar(intl.formatMessage(messages.fetchErr), { 
+                            variant: 'error',
+                        })                    
                     }
                     console.log(e.message)
                 });
@@ -115,6 +122,11 @@ const System = () => {
             }
         }else{
             setErr(true)
+        }
+        if(err){
+            enqueueSnackbar(intl.formatMessage(messages.loginError), { 
+                variant: 'error',
+            })
         }
     }
     return(
