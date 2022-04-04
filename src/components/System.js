@@ -6,8 +6,7 @@ import { useSnackbar } from 'notistack';
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import FingerprintTwoToneIcon from '@mui/icons-material/FingerprintTwoTone';
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { decryptFn } from '../lib/encryption';
 import Connect from './Connect';
 
 import { initializeApp } from "firebase/app";
@@ -87,10 +86,9 @@ const System = () => {
         sessionStorage.setItem('updated',new Date().toISOString())
         if(cloud && pass.length>0 && parsedDataDb[select].csv){
             window.localStorage.setItem('csv_url', parsedDataDb[select].csv)
-            let URLbytes,URL
+            let URL
             try{
-                URLbytes = aes.decrypt(parsedDataDb[select].csv, pass)
-                URL = URLbytes.toString(enc);
+                URL = decryptFn(parsedDataDb[select].csv, pass)
                 if(URL!==''){
                     window.sessionStorage.setItem('pass',window.btoa(pass));
                     if(parsedDataDb[select].api){
@@ -107,10 +105,9 @@ const System = () => {
             }
         }
         else if(!cloud && pass.length>0 && localStorage.getItem('csv_url')!==null){
-            let URLbytes,URL
+            let URL
             try{
-                URLbytes = aes.decrypt(window.localStorage.getItem('csv_url'), pass)
-                URL = URLbytes.toString(enc);
+                URL = decryptFn(window.localStorage.getItem('csv_url'), pass)
                 if(URL!==''){
                     window.sessionStorage.setItem('pass',window.btoa(pass));
                     setLogged(true);

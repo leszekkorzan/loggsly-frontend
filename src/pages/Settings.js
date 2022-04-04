@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Typography, TextField, Button, Divider, Paper } from '@mui/material';
 import { useIntl } from 'react-intl';
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { encryptFn, decryptFn } from '../lib/encryption';
 import {useGlobalState} from '../components/state';
 import { useSnackbar } from 'notistack';
 
@@ -28,8 +27,7 @@ const Settings = () => {
     useEffect(()=>{
         if(window.localStorage.getItem('manage_api')!==null){
             try{
-                var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
-                var URL = URLbytes.toString(enc);
+                const URL  = decryptFn(window.localStorage.getItem('manage_api'), pass);
                 setApiInpt(URL);
             }catch{
                 console.log('err parsing data')
@@ -44,7 +42,7 @@ const Settings = () => {
                 variant: 'success',
             })
         }else{
-            const text = aes.encrypt(apiInpt, pass).toString();
+            const text = encryptFn(apiInpt, pass);
             window.localStorage.setItem('manage_api', text);
             enqueueSnackbar(intl.formatMessage(messages.enabled), { 
                 variant: 'success',

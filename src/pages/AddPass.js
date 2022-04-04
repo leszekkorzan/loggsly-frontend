@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { Container, Typography, TextField, Button, Divider, Alert, AlertTitle, Paper } from '@mui/material';
 import { useIntl } from 'react-intl';
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { encryptFn, decryptFn } from '../lib/encryption';
 import copy from 'copy-to-clipboard';
 
 const messages = {
@@ -42,7 +41,7 @@ const AddPass = () => {
     const [success, setSuccess] = useState(false)
 
     const encrypt = () => {
-        const text = aes.encrypt(passInpt, pass).toString();
+        const text = encryptFn(passInpt, pass);
         setEncrypted(text)
         setPassInpt('')
     }
@@ -50,8 +49,7 @@ const AddPass = () => {
         if(window.localStorage.getItem('manage_api')!==null && website.length>0 && login.length>0 && password.length>0){
             setErr('')
             setLoading(true);
-            var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), pass);
-            var URL = URLbytes.toString(enc);
+            const URL = decryptFn(window.localStorage.getItem('manage_api'), pass);
 
             window.fetch(URL,{
                 redirect:'follow',
@@ -59,7 +57,7 @@ const AddPass = () => {
                 headers: {
                   'Content-Type': 'text/plain;charset=utf-8'
                 },
-                body: JSON.stringify({type:'add',website:website,login:window.btoa(login),password:window.btoa(aes.encrypt(password, pass).toString()),category:category})
+                body: JSON.stringify({type:'add',website:website,login:window.btoa(login),password:window.btoa(encryptFn(password, pass)),category:category})
             }).then(res => res.json())
             .then(res => {
                 if(res.success){

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { decryptFn } from '../lib/encryption';
 import { Alert, AlertTitle, Button, Box } from '@mui/material';
 import { useIntl } from 'react-intl';
 import RingLoader from 'react-spinners/RingLoader';
@@ -24,8 +23,7 @@ const Connect = () => {
     const updated = window.sessionStorage.getItem('updated') || '';
 
     const password = window.atob(window.sessionStorage.getItem('pass'));
-    var URLbytes  = aes.decrypt(window.localStorage.getItem('csv_url'), password);
-    var URL = URLbytes.toString(enc);
+    const URL = decryptFn(window.localStorage.getItem('csv_url'), password);
 
     useEffect(() => {
         const fetchData = () => {

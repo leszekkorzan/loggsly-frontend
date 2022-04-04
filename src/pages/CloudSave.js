@@ -15,8 +15,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import PaymentIcon from '@mui/icons-material/Payment';
 
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { encryptFn, decryptFn } from '../lib/encryption';
 
 const messages = {
     savedAndDisabled: { id: 'app.cloudsave.profileElm.savedAndDisabled' },
@@ -82,15 +81,12 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
 
     const login = ()=> {
         if(pass.length>0){
-            let URLbytes,URL
+            let URL
             try{
-                URLbytes = aes.decrypt(i.csv, pass)
-                URL = URLbytes.toString(enc);
+                URL = decryptFn(i.csv, pass)
                 if(URL!==''){
                     if(i.api){
-                        let URLbytes2,URL2
-                        URLbytes2 = aes.decrypt(i.api, pass)
-                        URL2 = URLbytes2.toString(enc);
+                        const URL2 = decryptFn(i.api, pass)
                         setApiURL(URL2)
                     }
                     setLogged(true);
@@ -122,8 +118,7 @@ const ProfileElm = ({i,index,dataDb, userUID}) => {
                 setUpdating(false);
             });
         }else{
-            const text = aes.encrypt(apiURL, pass).toString();
-            console.log(text)
+            const text = encryptFn(apiURL, pass);
             update(ref(db, `users/${userUID}/data/${Object.keys(dataDb)[index]}`), {
                 api: text
             }).then(()=>{
@@ -278,13 +273,13 @@ const CloudSave = () => {
             if(addingCSV.toLowerCase().startsWith('https://script.google.com/')){
                 refData = {
                     name: addingName,
-                    csv: aes.encrypt(addingCSV, addingPass).toString(),
-                    api: aes.encrypt(addingCSV, addingPass).toString()
+                    csv: encryptFn(addingCSV, addingPass),
+                    api: encryptFn(addingCSV, addingPass)
                 }
             }else{
                 refData = {
                     name: addingName,
-                    csv: aes.encrypt(addingCSV, addingPass).toString()
+                    csv: encryptFn(addingCSV, addingPass)
                 }
             }
 
