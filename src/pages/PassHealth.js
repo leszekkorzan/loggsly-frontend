@@ -1,9 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import { Container, Avatar, Box, Typography, Button, Paper} from '@mui/material';
 import { useIntl } from 'react-intl';
-import aes from 'crypto-js/aes';
 import sha1 from 'crypto-js/sha1';
-import enc from 'crypto-js/enc-utf8';
+import { decryptFn } from '../lib/encryption';
 import PasswordStrengthBar from 'react-password-strength-bar';
 
 import LockIcon from '@mui/icons-material/Lock';
@@ -63,11 +62,7 @@ const PassHealth = () => {
     const intl = useIntl();
 
     const [show,setShow] = useState(false);
-    const decrypt = (text,key) =>{
-        var bytes  = aes.decrypt(text, key);
-        var decrypted = bytes.toString(enc);
-        return decrypted;
-    }
+
     const data = JSON.parse(window.sessionStorage.getItem('csv_data'))    
     if(!data){
         window.location = '/';
@@ -78,7 +73,7 @@ const PassHealth = () => {
             {show ? (
                 <Container sx={{textAlign:'center', display:'flex', flexWrap:'wrap', justifyContent:'center', mb:5, mt:1}}>
                     {data.map((elm,index)=>
-                        <HealthElm key={index} website={elm.website} login={elm.login} pass={decrypt(elm.password, window.atob(window.sessionStorage.getItem('pass')))} />
+                        <HealthElm key={index} website={elm.website} login={elm.login} pass={decryptFn(elm.password, window.atob(window.sessionStorage.getItem('pass')))} />
                     )}
 
                 </Container>

@@ -10,8 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import { encryptFn, decryptFn } from '../lib/encryption';
 
 import copy from 'copy-to-clipboard';
 
@@ -82,8 +81,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
 
     const remove = () => {
         if(window.confirm(intl.formatMessage(messages.deletePassword)) && window.localStorage.getItem('manage_api')!==null){
-            var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
-            var URL = URLbytes.toString(enc);
+            const URL = decryptFn(window.localStorage.getItem('manage_api'), mainpass);
             window.fetch(URL,{
                 redirect:'follow',
                 method: 'POST',
@@ -116,8 +114,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
     }
     const update = () => {
         if(window.confirm(intl.formatMessage(messages.updatePass)) && window.localStorage.getItem('manage_api')!==null && websiteField.length>0 && loginField.length>0 && passField.length>0){
-            var URLbytes  = aes.decrypt(window.localStorage.getItem('manage_api'), mainpass);
-            var URL = URLbytes.toString(enc);
+            const URL = decryptFn(window.localStorage.getItem('manage_api'), mainpass);
             setAdding(true);
             window.fetch(URL,{
                 redirect:'follow',
@@ -135,7 +132,7 @@ const AccountElm = ({index,edit,website,login,pass,category,mainpass}) => {
                         headers: {
                           'Content-Type': 'text/plain;charset=utf-8'
                         },
-                        body: JSON.stringify({type:'add',website:websiteField,login:window.btoa(loginField),password:window.btoa(aes.encrypt(passField, mainpass).toString()),category:categoryField})
+                        body: JSON.stringify({type:'add',website:websiteField,login:window.btoa(loginField),password:window.btoa(encryptFn(passField, mainpass)),category:categoryField})
                     }).then(res => res.json())
                     .then(res => {
                         if(res.success){
@@ -257,11 +254,6 @@ const Passes = ({data, pass}) => {
     const [edit,setEdit] = useState(false);
     const [err,setErr] = useState(false);
 
-    const decrypt = (text,key) =>{
-        var bytes  = aes.decrypt(text, key);
-        var decrypted = bytes.toString(enc);
-        return decrypted;
-    }
     data.map((elm,index)=>{
         data[index]['index'] = index.toString()
         return true
@@ -298,7 +290,7 @@ const Passes = ({data, pass}) => {
                 {filteredData.map((elm)=>
                     <>
                     {elm.index && elm.website && elm.login && elm.password && (
-                        <AccountElm index={elm.index} edit={edit} mainpass={pass} website={elm.website} login={elm.login} pass={decrypt(elm.password, pass)} category={elm.category}/>
+                        <AccountElm index={elm.index} edit={edit} mainpass={pass} website={elm.website} login={elm.login} pass={decryptFn(elm.password, pass)} category={elm.category}/>
                     )}
                     </>
                 )}

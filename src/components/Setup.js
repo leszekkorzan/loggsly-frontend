@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Box, Typography, TextField, Button, Alert, AlertTitle, InputAdornment, Paper} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import StorageIcon from '@mui/icons-material/Storage';
-import aes from 'crypto-js/aes';
+import { encryptFn } from '../lib/encryption';
 import { useIntl } from 'react-intl';
 
 const messages = {
@@ -28,9 +28,9 @@ const Setup = () => {
 
     const save = () => {
         if(url.length > 5 && pass1.length > 1 && pass1 === pass2){
-            window.localStorage.setItem('csv_url', aes.encrypt(url, pass1).toString())
+            window.localStorage.setItem('csv_url', encryptFn(url, pass1))
             if(url.toLowerCase().startsWith('https://script.google.com/')){
-                window.localStorage.setItem('manage_api', aes.encrypt(url, pass1).toString())
+                window.localStorage.setItem('manage_api', encryptFn(url, pass1))
             }
             setOk(true)
         }else{
