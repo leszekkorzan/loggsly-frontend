@@ -1,11 +1,9 @@
 import aes from 'crypto-js/aes';
-import enc from 'crypto-js/enc-utf8'
+import enc from 'crypto-js/enc-utf8';
 
-const encryptFn = (text, pass) => {
-    return aes.encrypt(text, pass).toString();
-}
+const encryptFn = (text, pass) => aes.encrypt(text, pass).toString();
 const decryptFn = (text, pass) => {
-    const bytes = aes.decrypt(text, pass);
-    return bytes.toString(enc);
-}
+  const bytes = aes.decrypt(text, pass);
+  return bytes.toString(enc);
+};
 export { encryptFn, decryptFn };
